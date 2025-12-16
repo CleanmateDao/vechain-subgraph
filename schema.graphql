@@ -196,6 +196,7 @@ type StreakSubmissionMedia @entity(immutable: true) {
 type UserStreakStats @entity(immutable: false) {
   id: Bytes! # user address
   user: Bytes! # address
+  streakerCode: String # unique streaker code (STREAKER_<codeSeeder>)
   totalSubmissions: BigInt!
   approvedSubmissions: BigInt!
   rejectedSubmissions: BigInt!

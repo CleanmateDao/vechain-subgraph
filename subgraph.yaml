@@ -141,6 +141,7 @@ dataSources:
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       entities:
+        - StreakerJoined
         - StreakSubmitted
         - StreakApproved
         - StreakRejected
@@ -148,6 +149,8 @@ dataSources:
         - name: Streak
           file: ./abis/Streak.json
       eventHandlers:
+        - event: StreakerJoined(indexed address,string)
+          handler: handleStreakerJoined
         - event: StreakSubmitted(indexed address,indexed uint256,string)
           handler: handleStreakSubmitted
         - event: StreakApproved(indexed address,indexed uint256,uint256)

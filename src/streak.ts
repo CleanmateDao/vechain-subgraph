@@ -2,6 +2,7 @@ import {
   StreakSubmitted as StreakSubmittedEvent,
   StreakApproved as StreakApprovedEvent,
   StreakRejected as StreakRejectedEvent,
+  StreakerJoined as StreakerJoinedEvent,
 } from "../generated/Streak/Streak";
 import {
   StreakSubmission,
@@ -31,19 +32,70 @@ function loadOrCreateUser(userAddress: Bytes, timestamp: BigInt): User {
 }
 
 // Helper function to load or create UserStreakStats
-function loadOrCreateUserStreakStats(userAddress: Bytes): UserStreakStats {
+function loadOrCreateUserStreakStats(
+  userAddress: Bytes,
+  streakerCode: string | null = null
+): UserStreakStats {
   let stats = UserStreakStats.load(userAddress);
   if (stats == null) {
     stats = new UserStreakStats(userAddress);
     stats.user = userAddress;
+    // Use provided streakerCode or generate fallback: STREAKER_<address>
+    stats.streakerCode =
+      streakerCode != null
+        ? streakerCode
+        : "STREAKER_" + userAddress.toHexString();
     stats.totalSubmissions = BigInt.fromI32(0);
     stats.approvedSubmissions = BigInt.fromI32(0);
     stats.rejectedSubmissions = BigInt.fromI32(0);
     stats.pendingSubmissions = BigInt.fromI32(0);
     stats.totalAmount = BigInt.fromI32(0);
     stats.save();
+  } else if (streakerCode != null && stats.streakerCode == null) {
+    // Update streakerCode if it was not set before
+    stats.streakerCode = streakerCode;
+    stats.save();
   }
   return stats;
+}
+
+export function handleStreakerJoined(event: StreakerJoinedEvent): void {
+  // Ensure user exists
+  loadOrCreateUser(event.params.user, event.block.timestamp);
+
+  // Create or update UserStreakStats with the streakerCode from the event
+  let stats = loadOrCreateUserStreakStats(
+    event.params.user,
+    event.params.streakerCode
+  );
+
+  // If streakerCode was already set but different, update it (shouldn't happen, but handle gracefully)
+  if (stats.streakerCode != event.params.streakerCode) {
+    stats.streakerCode = event.params.streakerCode;
+    stats.save();
+  }
+
+  // Create notification
+  let notification = new Notification(
+    event.transaction.hash
+      .concatI32(event.logIndex.toI32())
+      .concat(Bytes.fromUTF8("streaker_joined"))
+      .toHex()
+  );
+  notification.user = event.params.user;
+  notification.type = "streaker_joined";
+  notification.title = "Welcome to Streak!";
+  notification.message =
+    "You've successfully joined the streak program! Your streaker code is: " +
+    event.params.streakerCode;
+  // Use user address as related entity for streak join
+  notification.relatedEntity = event.params.user;
+  notification.relatedEntityType = "user";
+  notification.read = false;
+  notification.createdAt = event.block.timestamp;
+  notification.blockNumber = event.block.number;
+  notification.transactionHash = event.transaction.hash;
+  notification.save();
 }
 
 export function handleStreakSubmitted(event: StreakSubmittedEvent): void {
