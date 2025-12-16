@@ -1,0 +1,205 @@
+# User State Entity - merges all user-related events
+type User @entity(immutable: false) {
+  id: Bytes! # user address
+  metadata: String
+  email: String # email address (immutable, set once during registration)
+  emailVerified: Boolean!
+  kycStatus: Int! # uint8: 0=NOT_STARTED, 1=PENDING, 2=VERIFIED, 3=REJECTED
+  referralCode: String
+  referrer: Bytes # address of referrer
+  isOrganizer: Boolean!
+  registeredAt: BigInt!
+  emailVerifiedAt: BigInt
+  lastProfileUpdateAt: BigInt
+  # Team membership info (for when user is a team member) - query by member address
+  # Total rewards earned (sum of all rewards received)
+  totalRewardsEarned: BigInt!
+  # Total rewards claimed
+  totalRewardsClaimed: BigInt!
+  # Pending rewards (earned but not claimed)
+  pendingRewards: BigInt!
+}
+
+# Team Membership - tracks team member relationships
+type TeamMembership @entity(immutable: false) {
+  id: ID! # organizer address + member address
+  organizer: Bytes! # address
+  member: Bytes! # address
+  canEditCleanups: Boolean!
+  canManageParticipants: Boolean!
+  canSubmitProof: Boolean!
+  addedAt: BigInt!
+  lastUpdatedAt: BigInt!
+}
+
+# Cleanup State Entity - merges all cleanup-related events
+type Cleanup @entity(immutable: false) {
+  id: Bytes! # cleanup address
+  organizer: Bytes! # address
+  metadata: String!
+  category: String
+  date: BigInt! # uint256
+  startTime: BigInt
+  endTime: BigInt
+  maxParticipants: BigInt
+  status: Int! # uint8
+  published: Boolean!
+  publishedAt: BigInt
+  unpublishedAt: BigInt
+  createdAt: BigInt!
+  updatedAt: BigInt
+  # Participants
+  participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
+  # Media
+  medias: [CleanupMedia!]! @derivedFrom(field: "cleanup")
+  # Proof of work
+  proofOfWorkSubmitted: Boolean!
+  proofOfWorkMedia: [ProofOfWorkMedia!]! @derivedFrom(field: "cleanup")
+  proofOfWorkMediaCount: BigInt
+  proofOfWorkSubmittedAt: BigInt
+  # Location
+  location: String # address
+  city: String
+  country: String
+  latitude: BigDecimal
+  longitude: BigDecimal
+  # Rewards
+  rewardAmount: BigInt
+  rewardsDistributed: Boolean!
+  rewardsTotalAmount: BigInt
+  rewardsParticipantCount: BigInt
+  rewardsDistributedAt: BigInt
+}
+
+# Cleanup Media - stores media URLs with MIME types
+type CleanupMedia @entity(immutable: true) {
+  id: ID! # cleanup address + media index or unique identifier
+  cleanup: Cleanup!
+  url: String!
+  mimeType: String!
+  createdAt: BigInt!
+}
+
+# Proof of Work Media - stores proof of work media URLs with MIME types
+type ProofOfWorkMedia @entity(immutable: true) {
+  id: ID! # cleanup address + media index or unique identifier
+  cleanup: Cleanup!
+  url: String! # IPFS hash or URL
+  mimeType: String!
+  uploadedAt: BigInt!
+  submittedAt: BigInt!
+}
+
+# Cleanup Participant - tracks participant state per cleanup
+type CleanupParticipant @entity(immutable: false) {
+  id: ID! # cleanup address + participant address
+  cleanup: Cleanup!
+  participant: Bytes! # address
+  appliedAt: BigInt!
+  status: String! # "applied", "accepted", "rejected"
+  acceptedAt: BigInt
+  rejectedAt: BigInt
+  # Reward earned for this cleanup
+  rewardEarned: BigInt!
+  rewardEarnedAt: BigInt
+}
+
+# Transaction Entity - tracks all reward transactions (CLAIM, RECEIVE)
+type Transaction @entity(immutable: true) {
+  id: ID! # transaction hash + log index (unique per event)
+  user: Bytes! # address
+  cleanupId: Bytes # address (null for non-cleanup rewards)
+  amount: BigInt! # uint256
+  transactionType: String! # "CLAIM" or "RECEIVE"
+  rewardType: Int # rewardType from event (0=REFERRAL, 1=BONUS, 2=CLEANUP, 3=OTHERS) (null for CLAIM transactions)
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+# Notifications Schema
+type Notification @entity(immutable: true) {
+  id: ID!
+  user: Bytes! # address
+  type: String! # notification type (e.g., "cleanup_created", "participant_accepted", "reward_earned")
+  title: String!
+  message: String!
+  relatedEntity: Bytes # address of related entity (cleanup, user, etc.)
+  relatedEntityType: String # type of related entity
+  read: Boolean!
+  createdAt: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+# Address Updated - tracks address updates in AddressesProvider
+type AddressUpdated @entity(immutable: true) {
+  id: ID!
+  key: String!
+  oldAddress: Bytes!
+  newAddress: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# AppId Updated - tracks app ID updates in RewardsManager
+type AppIdUpdated @entity(immutable: true) {
+  id: ID!
+  oldAppId: Bytes!
+  newAppId: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# Rewards Pool Updated - tracks rewards pool address updates in RewardsManager
+type RewardsPoolUpdated @entity(immutable: true) {
+  id: ID!
+  oldPool: Bytes!
+  newPool: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# Streak Submission Entity - tracks sustainable action submissions
+type StreakSubmission @entity(immutable: false) {
+  id: ID! # submissionId
+  user: Bytes! # address
+  submissionId: BigInt!
+  metadata: String!
+  status: Int! # 0=PENDING, 1=APPROVED, 2=REJECTED
+  submittedAt: BigInt!
+  reviewedAt: BigInt
+  amount: BigInt # amount approved (null if not approved)
+  rejectionReason: String # reason for rejection (null if not rejected)
+  # Media/Proof
+  ipfsHashes: [String!]!
+  mimetypes: [String!]!
+  # Media entities
+  media: [StreakSubmissionMedia!]! @derivedFrom(field: "submission")
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+# Streak Submission Media - stores IPFS hashes and MIME types
+type StreakSubmissionMedia @entity(immutable: true) {
+  id: ID! # submissionId + index
+  submission: StreakSubmission!
+  ipfsHash: String!
+  mimeType: String!
+  index: BigInt!
+}
+
+# User Streak Stats - tracks user's streak-related statistics
+type UserStreakStats @entity(immutable: false) {
+  id: Bytes! # user address
+  user: Bytes! # address
+  totalSubmissions: BigInt!
+  approvedSubmissions: BigInt!
+  rejectedSubmissions: BigInt!
+  pendingSubmissions: BigInt!
+  totalAmount: BigInt! # total amount from approved submissions
+  lastSubmissionAt: BigInt
+}
