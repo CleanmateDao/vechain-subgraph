@@ -24,9 +24,10 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   let transaction = new Transaction(transactionId.toHex());
   transaction.user = event.params.participant;
   transaction.cleanupId = event.params.cleanupId;
+  transaction.streakSubmissionId = event.params.streakSubmissionId;
   transaction.amount = event.params.amount;
   transaction.transactionType = "RECEIVE";
-  // rewardType is nullable and defaults to null, so we don't need to set it
+  transaction.rewardType = event.params.rewardType;
   transaction.timestamp = event.block.timestamp;
   transaction.blockNumber = event.block.number;
   transaction.transactionHash = event.transaction.hash;

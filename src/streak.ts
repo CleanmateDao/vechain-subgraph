@@ -112,6 +112,7 @@ export function handleStreakSubmitted(event: StreakSubmittedEvent): void {
   submission.submittedAt = event.block.timestamp;
   submission.reviewedAt = null;
   submission.amount = null;
+  submission.rewardAmount = null;
   submission.rejectionReason = null;
   submission.ipfsHashes = [];
   submission.mimetypes = [];
@@ -172,6 +173,7 @@ export function handleStreakApproved(event: StreakApprovedEvent): void {
   submission.status = 1; // APPROVED
   submission.reviewedAt = event.block.timestamp;
   submission.amount = event.params.amount;
+  submission.rewardAmount = event.params.amount;
   submission.rejectionReason = null;
   submission.save();
 
@@ -228,6 +230,7 @@ export function handleStreakRejected(event: StreakRejectedEvent): void {
   submission.status = 2; // REJECTED
   submission.reviewedAt = event.block.timestamp;
   submission.amount = null;
+  submission.rewardAmount = null;
   submission.rejectionReason = event.params.reason;
   submission.save();
 

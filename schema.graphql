@@ -109,9 +109,10 @@ type Transaction @entity(immutable: true) {
   id: ID! # transaction hash + log index (unique per event)
   user: Bytes! # address
   cleanupId: Bytes # address (null for non-cleanup rewards)
+  streakSubmissionId: BigInt # streak submission id (0 for non-streak rewards)
   amount: BigInt! # uint256
   transactionType: String! # "CLAIM" or "RECEIVE"
-  rewardType: Int # rewardType from event (0=REFERRAL, 1=BONUS, 2=CLEANUP, 3=OTHERS) (null for CLAIM transactions)
+  rewardType: Int # rewardType from event (0=REFERRAL, 1=BONUS, 2=CLEANUP, 3=STREAK, 4=OTHERS) (null for CLAIM transactions)
   timestamp: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!
@@ -126,7 +127,7 @@ type Notification @entity(immutable: true) {
   message: String!
   relatedEntity: Bytes # address of related entity (cleanup, user, etc.)
   relatedEntityType: String # type of related entity
-  read: Boolean!
+  read: Boolean!`
   createdAt: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!
@@ -173,6 +174,7 @@ type StreakSubmission @entity(immutable: false) {
   submittedAt: BigInt!
   reviewedAt: BigInt
   amount: BigInt # amount approved (null if not approved)
+  rewardAmount: BigInt # amount approved (alias of amount; preferred field name)
   rejectionReason: String # reason for rejection (null if not rejected)
   # Media/Proof
   ipfsHashes: [String!]!

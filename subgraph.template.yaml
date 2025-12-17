@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: CleanupFactory
-    network: vechain-mainnet
+    network: { { network } }
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "{{CleanupFactory.address}}"
       abi: CleanupFactory
-      startBlock: 0
+      startBlock: { { CleanupFactory.startBlock } }
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -29,11 +29,11 @@ dataSources:
 
   - kind: ethereum
     name: UserRegistry
-    network: vechain-mainnet
+    network: { { network } }
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "{{UserRegistry.address}}"
       abi: UserRegistry
-      startBlock: 0
+      startBlock: { { UserRegistry.startBlock } }
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -77,11 +77,11 @@ dataSources:
 
   - kind: ethereum
     name: RewardsManager
-    network: vechain-mainnet
+    network: { { network } }
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "{{RewardsManager.address}}"
       abi: RewardsManager
-      startBlock: 0
+      startBlock: { { RewardsManager.startBlock } }
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -110,11 +110,11 @@ dataSources:
 
   - kind: ethereum
     name: AddressesProvider
-    network: vechain-mainnet
+    network: { { network } }
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "{{AddressesProvider.address}}"
       abi: AddressesProvider
-      startBlock: 0
+      startBlock: { { AddressesProvider.startBlock } }
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -131,11 +131,11 @@ dataSources:
 
   - kind: ethereum
     name: Streak
-    network: vechain-mainnet
+    network: { { network } }
     source:
-      address: "0x0000000000000000000000000000000000000000"
+      address: "{{Streak.address}}"
       abi: Streak
-      startBlock: 0
+      startBlock: { { Streak.startBlock } }
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -162,7 +162,7 @@ dataSources:
 templates:
   - kind: ethereum
     name: Cleanup
-    network: vechain-mainnet
+    network: { { network } }
     source:
       abi: Cleanup
     mapping:
@@ -199,4 +199,3 @@ templates:
         - event: ProofOfWorkSubmitted(indexed address,indexed address,uint256,uint256)
           handler: handleProofOfWorkSubmitted
       file: ./src/cleanup.ts
-
