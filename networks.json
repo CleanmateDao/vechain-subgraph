@@ -1,5 +1,5 @@
 {
-  "vechain-mainnet": {
+  "mainnet": {
     "CleanupFactory": {
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 0
@@ -18,37 +18,29 @@
     },
     "Streak": {
       "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
-    },
-    "Cleanup": {
-      "address": "0x6c0A6e1d922E0e63901301573370b932AE20DAdB",
       "startBlock": 0
     }
   },
-  "vechain-testnet": {
+  "testnet": {
     "CleanupFactory": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "address": "0x03f44A9dd22E6757A47f50a0209c3D22E3B82726",
+      "startBlock": 23595356
     },
     "UserRegistry": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "address": "0x0cBA81c2b4B47ADF4a21B56Db04C5B7d8dC01deC",
+      "startBlock": 23595356
     },
     "RewardsManager": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "address": "0xdb95AFa4763212A4F5c6580cb6d0835517BaC4d4",
+      "startBlock": 23595356
     },
     "AddressesProvider": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "address": "0xd9D0172c841DcED4a7fF6F429a188427448Abea4",
+      "startBlock": 23595356
     },
     "Streak": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
-    },
-    "Cleanup": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "address": "0x038c78AC3171ACF6Fdb8054BA9926c47234C5991",
+      "startBlock": 23595356
     }
   }
 }

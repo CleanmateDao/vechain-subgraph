@@ -27,7 +27,7 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   }
 
   user.metadata = event.params.metadata;
-  // Email is not in the event, it's set separately
+  user.email = event.params.email;
   user.registeredAt = event.block.timestamp;
   user.save();
 
@@ -146,7 +146,7 @@ export function handleUserProfileUpdated(event: UserProfileUpdatedEvent): void {
     user.pendingRewards = BigInt.fromI32(0);
   }
 
-  // Metadata is not in UserProfileUpdated event, it's updated separately
+  user.metadata = event.params.metadata;
   user.lastProfileUpdateAt = event.block.timestamp;
   user.save();
 

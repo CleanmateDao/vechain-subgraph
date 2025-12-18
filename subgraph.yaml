@@ -1,19 +1,17 @@
-specVersion: 1.3.0
-indexerHints:
-  prune: auto
+specVersion: 0.0.5
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
     name: CleanupFactory
-    network: vechain-mainnet
+    network: testnet
     source:
-      address: "0x0000000000000000000000000000000000000000"
       abi: CleanupFactory
-      startBlock: 0
+      address: "0x03f44A9dd22E6757A47f50a0209c3D22E3B82726"
+      startBlock: 23595356
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - CleanupFactoryCleanupCreated
@@ -26,17 +24,16 @@ dataSources:
         - event: CleanupCreated(indexed address,indexed address,string,uint256)
           handler: handleCleanupFactoryCleanupCreated
       file: ./src/cleanup-factory.ts
-
   - kind: ethereum
     name: UserRegistry
-    network: vechain-mainnet
+    network: testnet
     source:
-      address: "0x0000000000000000000000000000000000000000"
       abi: UserRegistry
-      startBlock: 0
+      address: "0x0cBA81c2b4B47ADF4a21B56Db04C5B7d8dC01deC"
+      startBlock: 23595356
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - UserRegistered
@@ -53,13 +50,13 @@ dataSources:
         - name: UserRegistry
           file: ./abis/UserRegistry.json
       eventHandlers:
-        - event: UserRegistered(indexed address,string)
+        - event: UserRegistered(indexed address,string,string)
           handler: handleUserRegistered
         - event: EmailVerified(indexed address)
           handler: handleEmailVerified
         - event: KYCStatusUpdated(indexed address,uint8,uint8)
           handler: handleKYCStatusUpdated
-        - event: UserProfileUpdated(indexed address)
+        - event: UserReferred(indexed address,indexed address,string)
           handler: handleUserProfileUpdated
         - event: ReferralCodeSet(indexed address,string)
           handler: handleReferralCodeSet
@@ -74,17 +71,16 @@ dataSources:
         - event: TeamMemberPermissionsUpdated(indexed address,indexed address,bool,bool,bool)
           handler: handleTeamMemberPermissionsUpdated
       file: ./src/user-registry.ts
-
   - kind: ethereum
     name: RewardsManager
-    network: vechain-mainnet
+    network: testnet
     source:
-      address: "0x0000000000000000000000000000000000000000"
       abi: RewardsManager
-      startBlock: 0
+      address: "0xdb95AFa4763212A4F5c6580cb6d0835517BaC4d4"
+      startBlock: 23595356
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - RewardEarned
@@ -96,7 +92,8 @@ dataSources:
         - name: RewardsManager
           file: ./abis/RewardsManager.json
       eventHandlers:
-        - event: RewardEarned(indexed address,indexed address,indexed uint256,uint256,uint8)
+        - event: RewardEarned(indexed address,indexed address,indexed
+            uint256,uint256,uint8)
           handler: handleRewardEarned
         - event: RewardsDistributed(indexed address,indexed address,uint256,uint256)
           handler: handleRewardsDistributed
@@ -107,17 +104,16 @@ dataSources:
         - event: RewardsPoolUpdated(indexed address,indexed address)
           handler: handleRewardsPoolUpdated
       file: ./src/rewards-manager.ts
-
   - kind: ethereum
     name: AddressesProvider
-    network: vechain-mainnet
+    network: testnet
     source:
-      address: "0x0000000000000000000000000000000000000000"
       abi: AddressesProvider
-      startBlock: 0
+      address: "0xd9D0172c841DcED4a7fF6F429a188427448Abea4"
+      startBlock: 23595356
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - AddressUpdated
@@ -128,17 +124,16 @@ dataSources:
         - event: AddressUpdated(indexed string,indexed address,indexed address)
           handler: handleAddressUpdated
       file: ./src/addresses-provider.ts
-
   - kind: ethereum
     name: Streak
-    network: vechain-mainnet
+    network: testnet
     source:
-      address: "0x0000000000000000000000000000000000000000"
       abi: Streak
-      startBlock: 0
+      address: "0x038c78AC3171ACF6Fdb8054BA9926c47234C5991"
+      startBlock: 23595356
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - StreakerJoined
@@ -158,16 +153,15 @@ dataSources:
         - event: StreakRejected(indexed address,indexed uint256,string)
           handler: handleStreakRejected
       file: ./src/streak.ts
-
 templates:
   - kind: ethereum
     name: Cleanup
-    network: vechain-mainnet
+    network: testnet
     source:
       abi: Cleanup
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.9
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - CleanupCreated
@@ -199,4 +193,3 @@ templates:
         - event: ProofOfWorkSubmitted(indexed address,indexed address,uint256,uint256)
           handler: handleProofOfWorkSubmitted
       file: ./src/cleanup.ts
-

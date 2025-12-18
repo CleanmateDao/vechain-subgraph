@@ -127,7 +127,7 @@ type Notification @entity(immutable: true) {
   message: String!
   relatedEntity: Bytes # address of related entity (cleanup, user, etc.)
   relatedEntityType: String # type of related entity
-  read: Boolean!`
+  read: Boolean!
   createdAt: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!

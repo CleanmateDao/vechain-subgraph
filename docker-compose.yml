@@ -1,7 +1,15 @@
-version: "3"
 services:
+  rpc-proxy:
+    image: ifavo/vet-rpc:latest
+    platform: linux/amd64
+    container_name: rpc-proxy
+    ports:
+      - "8545:8545"
+    environment:
+      - NODE_URL=${NODE_URL}
   graph-node:
-    image: graphprotocol/graph-node
+    platform: linux/amd64
+    image: graphprotocol/graph-node:v0.35.1
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -11,18 +19,20 @@ services:
     depends_on:
       - ipfs
       - postgres
-    extra_hosts:
-      - host.docker.internal:host-gateway
+      - rpc-proxy
     environment:
       postgres_host: postgres
-      postgres_user: ${POSTGRES_USER:-graph-node}
-      postgres_pass: ${POSTGRES_PASSWORD:-let-me-in}
-      postgres_db: ${POSTGRES_DB:-graph-node}
+      postgres_user: ${POSTGRES_USER}
+      postgres_pass: ${POSTGRES_PASSWORD}
+      postgres_db: ${POSTGRES_DB}
       ipfs: "ipfs:5001"
-      ethereum: "vechain-testnet:${VECHAIN_TESTNET_RPC} vechain-mainnet:${VECHAIN_MAINNET_RPC}"
+      ethereum: "${NETWORK}:http://rpc-proxy:8545"
       GRAPH_LOG: info
+      ETHEREUM_POLLING_INTERVAL: 1000
+      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: 100
   ipfs:
-    image: ipfs/kubo:v0.17.0
+    platform: linux/amd64
+    image: ipfs/kubo:v0.29.0
     ports:
       - "5001:5001"
     volumes:
@@ -38,12 +48,9 @@ services:
         "-cmax_connections=200",
       ]
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-graph-node}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-let-me-in}
-      POSTGRES_DB: ${POSTGRES_DB:-graph-node}
-      # FIXME: remove this env. var. which we shouldn't need. Introduced by
-      # <https://github.com/graphprotocol/graph-node/pull/3511>, maybe as a
-      # workaround for https://github.com/docker/for-mac/issues/6270?
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
       PGDATA: "/var/lib/postgresql/data"
       POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
     volumes:
