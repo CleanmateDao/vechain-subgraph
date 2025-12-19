@@ -33,6 +33,4 @@ typechain-types
 # Hardhat files
 cache
 
-cleanmate-graph-key.pem
-
 data
