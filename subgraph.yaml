@@ -7,7 +7,7 @@ dataSources:
     network: testnet
     source:
       abi: CleanupFactory
-      address: "0x03f44A9dd22E6757A47f50a0209c3D22E3B82726"
+      address: "0xBF74Bb5e7d32577f19Dc88DB9066dfB08E2bEDfF"
       startBlock: 23595356
     mapping:
       kind: ethereum/events
@@ -29,7 +29,7 @@ dataSources:
     network: testnet
     source:
       abi: UserRegistry
-      address: "0x0cBA81c2b4B47ADF4a21B56Db04C5B7d8dC01deC"
+      address: "0x90333be5cc28dE79bdaE954D012cd0DB2e88d2d7"
       startBlock: 23595356
     mapping:
       kind: ethereum/events
@@ -56,7 +56,7 @@ dataSources:
           handler: handleEmailVerified
         - event: KYCStatusUpdated(indexed address,uint8,uint8)
           handler: handleKYCStatusUpdated
-        - event: UserReferred(indexed address,indexed address,string)
+        - event: UserProfileUpdated(indexed address,string)
           handler: handleUserProfileUpdated
         - event: ReferralCodeSet(indexed address,string)
           handler: handleReferralCodeSet
@@ -76,7 +76,7 @@ dataSources:
     network: testnet
     source:
       abi: RewardsManager
-      address: "0xdb95AFa4763212A4F5c6580cb6d0835517BaC4d4"
+      address: "0x4702f7Bb924aeEB805B1daF16b609b7BD6a24af8"
       startBlock: 23595356
     mapping:
       kind: ethereum/events
@@ -109,7 +109,7 @@ dataSources:
     network: testnet
     source:
       abi: AddressesProvider
-      address: "0xd9D0172c841DcED4a7fF6F429a188427448Abea4"
+      address: "0xa259092bAaE0D961814B415636dF045f39dE2CcF"
       startBlock: 23595356
     mapping:
       kind: ethereum/events
@@ -129,7 +129,7 @@ dataSources:
     network: testnet
     source:
       abi: Streak
-      address: "0x038c78AC3171ACF6Fdb8054BA9926c47234C5991"
+      address: "0x41C49d2Df4c0DDb201cf0B1260f2A3702f37D5c2"
       startBlock: 23595356
     mapping:
       kind: ethereum/events
