@@ -12,8 +12,8 @@ import {
   Cleanup,
   CleanupParticipant,
   Notification,
-  CleanupMedia,
   ProofOfWorkMedia,
+  User,
 } from "../generated/schema";
 import { Bytes, BigInt } from "@graphprotocol/graph-ts";
 
@@ -32,6 +32,10 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
   cleanup.organizer = event.params.organizer;
   cleanup.metadata = event.params.metadata;
   cleanup.date = event.params.date;
+  cleanup.startTime = event.params.startTime;
+  cleanup.endTime = event.params.endTime;
+  cleanup.maxParticipants = event.params.maxParticipants;
+  cleanup.rewardAmount = event.params.rewardAmount;
   cleanup.createdAt = event.block.timestamp;
   cleanup.updatedAt = event.block.timestamp;
   cleanup.save();
@@ -94,6 +98,21 @@ export function handleParticipantAccepted(
     cleanup.save();
   }
 
+  // Ensure User exists
+  let user = User.load(event.params.participant);
+  if (user == null) {
+    user = new User(event.params.participant);
+    user.metadata = "";
+    user.emailVerified = false;
+    user.kycStatus = 0;
+    user.isOrganizer = false;
+    user.registeredAt = event.block.timestamp;
+    user.totalRewardsEarned = BigInt.fromI32(0);
+    user.totalRewardsClaimed = BigInt.fromI32(0);
+    user.pendingRewards = BigInt.fromI32(0);
+    user.save();
+  }
+
   // Create or update CleanupParticipant state
   let participantId = cleanupId + "-" + event.params.participant.toHexString();
   let participant = CleanupParticipant.load(participantId);
@@ -101,6 +120,7 @@ export function handleParticipantAccepted(
     participant = new CleanupParticipant(participantId);
     participant.cleanup = cleanupId;
     participant.participant = event.params.participant;
+    participant.user = event.params.participant;
     participant.appliedAt = event.block.timestamp; // Use current timestamp if appliedAt is unknown
     participant.rewardEarned = BigInt.fromI32(0);
   }
@@ -147,6 +167,21 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     cleanup.save();
   }
 
+  // Ensure User exists
+  let user = User.load(event.params.participant);
+  if (user == null) {
+    user = new User(event.params.participant);
+    user.metadata = "";
+    user.emailVerified = false;
+    user.kycStatus = 0;
+    user.isOrganizer = false;
+    user.registeredAt = event.block.timestamp;
+    user.totalRewardsEarned = BigInt.fromI32(0);
+    user.totalRewardsClaimed = BigInt.fromI32(0);
+    user.pendingRewards = BigInt.fromI32(0);
+    user.save();
+  }
+
   // Create or update CleanupParticipant
   let participantId = cleanupId + "-" + event.params.participant.toHexString();
   let participant = CleanupParticipant.load(participantId);
@@ -154,6 +189,7 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     participant = new CleanupParticipant(participantId);
     participant.cleanup = cleanupId;
     participant.participant = event.params.participant;
+    participant.user = event.params.participant;
     participant.rewardEarned = BigInt.fromI32(0);
   }
 
@@ -202,6 +238,21 @@ export function handleParticipantRejected(
     cleanup.save();
   }
 
+  // Ensure User exists
+  let user = User.load(event.params.participant);
+  if (user == null) {
+    user = new User(event.params.participant);
+    user.metadata = "";
+    user.emailVerified = false;
+    user.kycStatus = 0;
+    user.isOrganizer = false;
+    user.registeredAt = event.block.timestamp;
+    user.totalRewardsEarned = BigInt.fromI32(0);
+    user.totalRewardsClaimed = BigInt.fromI32(0);
+    user.pendingRewards = BigInt.fromI32(0);
+    user.save();
+  }
+
   // Create or update CleanupParticipant state
   let participantId = cleanupId + "-" + event.params.participant.toHexString();
   let participant = CleanupParticipant.load(participantId);
@@ -209,6 +260,7 @@ export function handleParticipantRejected(
     participant = new CleanupParticipant(participantId);
     participant.cleanup = cleanupId;
     participant.participant = event.params.participant;
+    participant.user = event.params.participant;
     participant.appliedAt = event.block.timestamp; // Use current timestamp if appliedAt is unknown
     participant.rewardEarned = BigInt.fromI32(0);
   }

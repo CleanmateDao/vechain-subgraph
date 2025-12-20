@@ -57,6 +57,8 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     let participantId = cleanupId + "-" + event.params.participant.toHexString();
     let participant = CleanupParticipant.load(participantId);
     if (participant != null) {
+      // Ensure user field is set (for backward compatibility with existing data)
+      participant.user = event.params.participant;
       // Accumulate rewards in case of multiple RewardEarned events for the same participant
       participant.rewardEarned = participant.rewardEarned.plus(
         event.params.amount

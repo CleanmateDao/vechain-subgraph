@@ -71,15 +71,6 @@ type Cleanup @entity(immutable: false) {
   rewardsDistributedAt: BigInt
 }
 
-# Cleanup Media - stores media URLs with MIME types
-type CleanupMedia @entity(immutable: true) {
-  id: ID! # cleanup ID + media index or unique identifier
-  cleanup: Cleanup!
-  url: String!
-  mimeType: String!
-  createdAt: BigInt!
-}
-
 # Proof of Work Media - stores proof of work media URLs with MIME types
 type ProofOfWorkMedia @entity(immutable: true) {
   id: ID! # cleanup ID + media index or unique identifier
@@ -95,6 +86,7 @@ type CleanupParticipant @entity(immutable: false) {
   id: ID! # cleanup ID + participant address
   cleanup: Cleanup!
   participant: Bytes! # address
+  user: User! # reference to User entity
   appliedAt: BigInt!
   status: String! # "applied", "accepted", "rejected"
   acceptedAt: BigInt
