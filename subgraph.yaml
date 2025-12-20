@@ -7,8 +7,8 @@ dataSources:
     network: test
     source:
       abi: Cleanup
-      address: "0xBF74Bb5e7d32577f19Dc88DB9066dfB08E2bEDfF"
-      startBlock: 23595356
+      address: "0x2e8c06a002b34d8ffc5f0d9e5eff6d01b1a16023"
+      startBlock: 23618000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -48,8 +48,8 @@ dataSources:
     network: test
     source:
       abi: UserRegistry
-      address: "0x90333be5cc28dE79bdaE954D012cd0DB2e88d2d7"
-      startBlock: 23595356
+      address: "0xef1a8111dfc8a35507cb34011d3ee4dd767371d7"
+      startBlock: 23618000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -95,8 +95,8 @@ dataSources:
     network: test
     source:
       abi: RewardsManager
-      address: "0x4702f7Bb924aeEB805B1daF16b609b7BD6a24af8"
-      startBlock: 23595356
+      address: "0x6fca51b13361ffb21cf60ab2092a38f27343dcb3"
+      startBlock: 23618000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -127,8 +127,8 @@ dataSources:
     network: test
     source:
       abi: AddressesProvider
-      address: "0xa259092bAaE0D961814B415636dF045f39dE2CcF"
-      startBlock: 23595356
+      address: "0xb4cb6cc5f96a914e36ac421ec874b1e77cd0fa4a"
+      startBlock: 23618000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -147,8 +147,8 @@ dataSources:
     network: test
     source:
       abi: Streak
-      address: "0x41C49d2Df4c0DDb201cf0B1260f2A3702f37D5c2"
-      startBlock: 23595356
+      address: "0x1f0006665384718a35500126d8b3a22c62825ca1"
+      startBlock: 23618000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
