@@ -50,8 +50,6 @@ type Cleanup @entity(immutable: false) {
   updatedAt: BigInt
   # Participants
   participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
-  # Media
-  medias: [CleanupMedia!]! @derivedFrom(field: "cleanup")
   # Proof of work
   proofOfWorkSubmitted: Boolean!
   proofOfWorkMedia: [ProofOfWorkMedia!]! @derivedFrom(field: "cleanup")
