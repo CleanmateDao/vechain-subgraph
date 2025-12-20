@@ -42,7 +42,7 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   notification.type = "user_registered";
   notification.title = "Welcome to CleanMate!";
   notification.message = "Your account has been successfully registered.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -79,7 +79,7 @@ export function handleEmailVerified(event: EmailVerifiedEvent): void {
   notification.type = "email_verified";
   notification.title = "Email Verified";
   notification.message = "Your email has been successfully verified.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -124,7 +124,7 @@ export function handleKYCStatusUpdated(event: KYCStatusUpdatedEvent): void {
   notification.title = "KYC Status Updated";
   notification.message =
     "Your KYC status has been updated to " + statusNames[statusIndex] + ".";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -161,7 +161,7 @@ export function handleUserProfileUpdated(event: UserProfileUpdatedEvent): void {
   notification.type = "user_profile_updated";
   notification.title = "Profile Updated";
   notification.message = "Your profile has been successfully updated.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -217,7 +217,7 @@ export function handleUserReferred(event: UserReferredEvent): void {
   notification.title = "New Referral";
   notification.message =
     "A new user has been referred using your referral code.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -257,7 +257,7 @@ export function handleOrganizerStatusUpdated(
   notification.message = event.params.isOrganizer
     ? "You have been granted organizer status."
     : "Your organizer status has been revoked.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -309,7 +309,7 @@ export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
   notification.type = "team_member_added";
   notification.title = "Added to Team";
   notification.message = "You have been added as a team member.";
-  notification.relatedEntity = event.params.organizer;
+  notification.relatedEntity = event.params.organizer.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -339,7 +339,7 @@ export function handleTeamMemberRemoved(event: TeamMemberRemovedEvent): void {
   notification.type = "team_member_removed";
   notification.title = "Removed from Team";
   notification.message = "You have been removed from the team.";
-  notification.relatedEntity = event.params.organizer;
+  notification.relatedEntity = event.params.organizer.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;

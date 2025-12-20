@@ -34,7 +34,7 @@ type TeamMembership @entity(immutable: false) {
 
 # Cleanup State Entity - merges all cleanup-related events
 type Cleanup @entity(immutable: false) {
-  id: Bytes! # cleanup address
+  id: String! # cleanup ID (uint256 as string)
   organizer: Bytes! # address
   metadata: String!
   category: String
@@ -73,7 +73,7 @@ type Cleanup @entity(immutable: false) {
 
 # Cleanup Media - stores media URLs with MIME types
 type CleanupMedia @entity(immutable: true) {
-  id: ID! # cleanup address + media index or unique identifier
+  id: ID! # cleanup ID + media index or unique identifier
   cleanup: Cleanup!
   url: String!
   mimeType: String!
@@ -82,7 +82,7 @@ type CleanupMedia @entity(immutable: true) {
 
 # Proof of Work Media - stores proof of work media URLs with MIME types
 type ProofOfWorkMedia @entity(immutable: true) {
-  id: ID! # cleanup address + media index or unique identifier
+  id: ID! # cleanup ID + media index or unique identifier
   cleanup: Cleanup!
   url: String! # IPFS hash or URL
   mimeType: String!
@@ -92,7 +92,7 @@ type ProofOfWorkMedia @entity(immutable: true) {
 
 # Cleanup Participant - tracks participant state per cleanup
 type CleanupParticipant @entity(immutable: false) {
-  id: ID! # cleanup address + participant address
+  id: ID! # cleanup ID + participant address
   cleanup: Cleanup!
   participant: Bytes! # address
   appliedAt: BigInt!
@@ -108,7 +108,7 @@ type CleanupParticipant @entity(immutable: false) {
 type Transaction @entity(immutable: true) {
   id: ID! # transaction hash + log index (unique per event)
   user: Bytes! # address
-  cleanupId: Bytes # address (null for non-cleanup rewards)
+  cleanupId: BigInt # cleanup ID (uint256, null for non-cleanup rewards)
   streakSubmissionId: BigInt # streak submission id (0 for non-streak rewards)
   amount: BigInt! # uint256
   transactionType: String! # "CLAIM" or "RECEIVE"
@@ -125,7 +125,7 @@ type Notification @entity(immutable: true) {
   type: String! # notification type (e.g., "cleanup_created", "participant_accepted", "reward_earned")
   title: String!
   message: String!
-  relatedEntity: Bytes # address of related entity (cleanup, user, etc.)
+  relatedEntity: String # ID of related entity (cleanup ID as string, user address, etc.)
   relatedEntityType: String # type of related entity
   read: Boolean!
   createdAt: BigInt!
@@ -179,19 +179,8 @@ type StreakSubmission @entity(immutable: false) {
   # Media/Proof
   ipfsHashes: [String!]!
   mimetypes: [String!]!
-  # Media entities
-  media: [StreakSubmissionMedia!]! @derivedFrom(field: "submission")
   blockNumber: BigInt!
   transactionHash: Bytes!
-}
-
-# Streak Submission Media - stores IPFS hashes and MIME types
-type StreakSubmissionMedia @entity(immutable: true) {
-  id: ID! # submissionId + index
-  submission: StreakSubmission!
-  ipfsHash: String!
-  mimeType: String!
-  index: BigInt!
 }
 
 # User Streak Stats - tracks user's streak-related statistics

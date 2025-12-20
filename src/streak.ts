@@ -6,7 +6,6 @@ import {
 } from "../generated/Streak/Streak";
 import {
   StreakSubmission,
-  StreakSubmissionMedia,
   UserStreakStats,
   User,
   Notification,
@@ -89,7 +88,7 @@ export function handleStreakerJoined(event: StreakerJoinedEvent): void {
     "You've successfully joined the streak program! Your streaker code is: " +
     event.params.streakerCode;
   // Use user address as related entity for streak join
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -114,8 +113,8 @@ export function handleStreakSubmitted(event: StreakSubmittedEvent): void {
   submission.amount = null;
   submission.rewardAmount = null;
   submission.rejectionReason = null;
-  submission.ipfsHashes = [];
-  submission.mimetypes = [];
+  submission.ipfsHashes = event.params.ipfsHashes;
+  submission.mimetypes = event.params.mimetypes;
   submission.blockNumber = event.block.number;
   submission.transactionHash = event.transaction.hash;
   submission.save();
@@ -139,11 +138,8 @@ export function handleStreakSubmitted(event: StreakSubmittedEvent): void {
   notification.title = "Streak Submitted";
   notification.message =
     "Your sustainable action submission has been received and is pending review.";
-  // Convert BigInt submissionId to Bytes (pad to 32 bytes)
-  let submissionIdBytes = Bytes.fromHexString(
-    "0x" + event.params.submissionId.toHex().slice(2).padStart(64, "0")
-  );
-  notification.relatedEntity = submissionIdBytes;
+  // Use submissionId as string for relatedEntity
+  notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -196,11 +192,8 @@ export function handleStreakApproved(event: StreakApprovedEvent): void {
   notification.title = "Streak Approved";
   notification.message =
     "Your sustainable action submission has been approved!";
-  // Convert BigInt submissionId to Bytes (pad to 32 bytes)
-  let submissionIdBytes = Bytes.fromHexString(
-    "0x" + event.params.submissionId.toHex().slice(2).padStart(64, "0")
-  );
-  notification.relatedEntity = submissionIdBytes;
+  // Use submissionId as string for relatedEntity
+  notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -253,11 +246,8 @@ export function handleStreakRejected(event: StreakRejectedEvent): void {
   notification.message =
     "Your sustainable action submission has been rejected. Reason: " +
     event.params.reason;
-  // Convert BigInt submissionId to Bytes (pad to 32 bytes)
-  let submissionIdBytes = Bytes.fromHexString(
-    "0x" + event.params.submissionId.toHex().slice(2).padStart(64, "0")
-  );
-  notification.relatedEntity = submissionIdBytes;
+  // Use submissionId as string for relatedEntity
+  notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
   notification.read = false;
   notification.createdAt = event.block.timestamp;

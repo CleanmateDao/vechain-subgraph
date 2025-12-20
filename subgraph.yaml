@@ -3,10 +3,10 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: CleanupFactory
+    name: Cleanup
     network: test
     source:
-      abi: CleanupFactory
+      abi: Cleanup
       address: "0xBF74Bb5e7d32577f19Dc88DB9066dfB08E2bEDfF"
       startBlock: 23595356
     mapping:
@@ -14,16 +14,35 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - CleanupFactoryCleanupCreated
+        - CleanupCreated
+        - CleanupPublished
+        - CleanupStatusUpdated
+        - CleanupUnpublished
+        - ParticipantAccepted
+        - ParticipantApplied
+        - ParticipantRejected
+        - ProofOfWorkSubmitted
       abis:
-        - name: CleanupFactory
-          file: ./abis/CleanupFactory.json
         - name: Cleanup
           file: ./abis/Cleanup.json
       eventHandlers:
-        - event: CleanupCreated(indexed address,indexed address,string,uint256)
-          handler: handleCleanupFactoryCleanupCreated
-      file: ./src/cleanup-factory.ts
+        - event: CleanupCreated(indexed uint256,indexed address,string,uint256)
+          handler: handleCleanupCreated
+        - event: CleanupPublished(indexed uint256,indexed address)
+          handler: handleCleanupPublished
+        - event: CleanupStatusUpdated(indexed uint256,uint8,uint8)
+          handler: handleCleanupStatusUpdated
+        - event: CleanupUnpublished(indexed uint256,indexed address)
+          handler: handleCleanupUnpublished
+        - event: ParticipantAccepted(indexed uint256,indexed address,indexed address)
+          handler: handleParticipantAccepted
+        - event: ParticipantApplied(indexed uint256,indexed address,uint256)
+          handler: handleParticipantApplied
+        - event: ParticipantRejected(indexed uint256,indexed address,indexed address)
+          handler: handleParticipantRejected
+        - event: ProofOfWorkSubmitted(indexed uint256,indexed address,uint256,uint256)
+          handler: handleProofOfWorkSubmitted
+      file: ./src/cleanup.ts
   - kind: ethereum
     name: UserRegistry
     network: test
@@ -92,10 +111,9 @@ dataSources:
         - name: RewardsManager
           file: ./abis/RewardsManager.json
       eventHandlers:
-        - event: RewardEarned(indexed address,indexed address,indexed
-            uint256,uint256,uint8)
+        - event: RewardEarned(indexed uint256,indexed address,indexed uint256,uint256,uint8)
           handler: handleRewardEarned
-        - event: RewardsDistributed(indexed address,indexed address,uint256,uint256)
+        - event: RewardsDistributed(indexed uint256,indexed address,uint256,uint256)
           handler: handleRewardsDistributed
         - event: RewardsClaimed(indexed address,uint256)
           handler: handleRewardsClaimed
@@ -146,50 +164,10 @@ dataSources:
       eventHandlers:
         - event: StreakerJoined(indexed address,string)
           handler: handleStreakerJoined
-        - event: StreakSubmitted(indexed address,indexed uint256,string)
+        - event: StreakSubmitted(indexed address,indexed uint256,string,string[],string[])
           handler: handleStreakSubmitted
         - event: StreakApproved(indexed address,indexed uint256,uint256)
           handler: handleStreakApproved
         - event: StreakRejected(indexed address,indexed uint256,string)
           handler: handleStreakRejected
       file: ./src/streak.ts
-templates:
-  - kind: ethereum
-    name: Cleanup
-    network: test
-    source:
-      abi: Cleanup
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - CleanupCreated
-        - CleanupPublished
-        - CleanupStatusUpdated
-        - CleanupUnpublished
-        - ParticipantAccepted
-        - ParticipantApplied
-        - ParticipantRejected
-        - ProofOfWorkSubmitted
-      abis:
-        - name: Cleanup
-          file: ./abis/Cleanup.json
-      eventHandlers:
-        - event: CleanupCreated(indexed address,indexed address,string,uint256)
-          handler: handleCleanupCreated
-        - event: CleanupPublished(indexed address,indexed address)
-          handler: handleCleanupPublished
-        - event: CleanupStatusUpdated(indexed address,uint8,uint8)
-          handler: handleCleanupStatusUpdated
-        - event: CleanupUnpublished(indexed address,indexed address)
-          handler: handleCleanupUnpublished
-        - event: ParticipantAccepted(indexed address,indexed address,indexed address)
-          handler: handleParticipantAccepted
-        - event: ParticipantApplied(indexed address,indexed address,uint256)
-          handler: handleParticipantApplied
-        - event: ParticipantRejected(indexed address,indexed address,indexed address)
-          handler: handleParticipantRejected
-        - event: ProofOfWorkSubmitted(indexed address,indexed address,uint256,uint256)
-          handler: handleProofOfWorkSubmitted
-      file: ./src/cleanup.ts

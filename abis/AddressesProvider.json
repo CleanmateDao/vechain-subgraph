@@ -82,7 +82,7 @@
   },
   {
     "inputs": [],
-    "name": "CLEANUP_FACTORY_KEY",
+    "name": "CLEANUP_KEY",
     "outputs": [
       {
         "internalType": "string",
@@ -198,11 +198,11 @@
   },
   {
     "inputs": [],
-    "name": "getCleanupFactory",
+    "name": "getCleanup",
     "outputs": [
       {
         "internalType": "address",
-        "name": "factory",
+        "name": "cleanup",
         "type": "address"
       }
     ],
@@ -307,7 +307,7 @@
         "type": "address"
       }
     ],
-    "name": "setCleanupFactory",
+    "name": "setCleanup",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

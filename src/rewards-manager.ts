@@ -23,7 +23,7 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     .concat(Bytes.fromUTF8("reward_earned"));
   let transaction = new Transaction(transactionId.toHex());
   transaction.user = event.params.participant;
-  transaction.cleanupId = event.params.cleanupId;
+  transaction.cleanupId = event.params.cleanupId.isZero() ? null : event.params.cleanupId;
   transaction.streakSubmissionId = event.params.streakSubmissionId;
   transaction.amount = event.params.amount;
   transaction.transactionType = "RECEIVE";
@@ -51,16 +51,19 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   user.pendingRewards = user.pendingRewards.plus(event.params.amount);
   user.save();
 
-  // Update CleanupParticipant
-  let participantId = event.params.cleanupId.concat(event.params.participant);
-  let participant = CleanupParticipant.load(participantId.toHex());
-  if (participant != null) {
-    // Accumulate rewards in case of multiple RewardEarned events for the same participant
-    participant.rewardEarned = participant.rewardEarned.plus(
-      event.params.amount
-    );
-    participant.rewardEarnedAt = event.block.timestamp;
-    participant.save();
+  // Update CleanupParticipant (only if cleanupId is not zero)
+  if (!event.params.cleanupId.isZero()) {
+    let cleanupId = event.params.cleanupId.toString();
+    let participantId = cleanupId + "-" + event.params.participant.toHexString();
+    let participant = CleanupParticipant.load(participantId);
+    if (participant != null) {
+      // Accumulate rewards in case of multiple RewardEarned events for the same participant
+      participant.rewardEarned = participant.rewardEarned.plus(
+        event.params.amount
+      );
+      participant.rewardEarnedAt = event.block.timestamp;
+      participant.save();
+    }
   }
 
   // Create notification
@@ -75,7 +78,7 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   notification.title = "Reward Earned";
   notification.message =
     "You have earned a reward for participating in a cleanup event.";
-  notification.relatedEntity = event.params.cleanupId;
+  notification.relatedEntity = event.params.cleanupId.isZero() ? null : event.params.cleanupId.toString();
   notification.relatedEntityType = "cleanup";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
@@ -86,7 +89,8 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
 
 export function handleRewardsDistributed(event: RewardsDistributedEvent): void {
   // Update Cleanup state
-  let cleanup = Cleanup.load(event.params.cleanupId);
+  let cleanupId = event.params.cleanupId.toString();
+  let cleanup = Cleanup.load(cleanupId);
   if (cleanup != null) {
     cleanup.rewardsDistributed = true;
     cleanup.rewardsTotalAmount = event.params.totalAmount;
@@ -145,7 +149,7 @@ export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
   notification.type = "rewards_claimed";
   notification.title = "Rewards Claimed";
   notification.message = "You have successfully claimed your rewards.";
-  notification.relatedEntity = event.params.user;
+  notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
   notification.read = false;
   notification.createdAt = event.block.timestamp;
