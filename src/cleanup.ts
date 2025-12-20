@@ -31,6 +31,12 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
 
   cleanup.organizer = event.params.organizer;
   cleanup.metadata = event.params.metadata;
+  cleanup.category = event.params.category;
+  cleanup.location = event.params.locationAddress;
+  cleanup.city = event.params.city;
+  cleanup.country = event.params.country;
+  cleanup.latitude = event.params.latitude.toBigDecimal();
+  cleanup.longitude = event.params.longitude.toBigDecimal();
   cleanup.date = event.params.date;
   cleanup.startTime = event.params.startTime;
   cleanup.endTime = event.params.endTime;

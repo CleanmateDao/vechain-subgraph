@@ -26,7 +26,7 @@ dataSources:
         - name: Cleanup
           file: ./abis/Cleanup.json
       eventHandlers:
-        - event: CleanupCreated(indexed uint256,indexed address,string,uint256)
+        - event: CleanupCreated(indexed uint256,indexed address,string,string,string,string,string,int256,int256,uint256,uint256,uint256,uint256,uint256)
           handler: handleCleanupCreated
         - event: CleanupPublished(indexed uint256,indexed address)
           handler: handleCleanupPublished
