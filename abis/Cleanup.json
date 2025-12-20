@@ -186,12 +186,6 @@
         "internalType": "uint256",
         "name": "maxParticipants",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardAmount",
-        "type": "uint256"
       }
     ],
     "name": "CleanupCreated",
@@ -258,6 +252,37 @@
       }
     ],
     "name": "CleanupUnpublished",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "cleanupId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "organizer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "metadata",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "addedAt",
+        "type": "uint256"
+      }
+    ],
+    "name": "CleanupUpdatesAdded",
     "type": "event"
   },
   {
@@ -352,9 +377,15 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "mediaCount",
-        "type": "uint256"
+        "internalType": "string[]",
+        "name": "ipfsHashes",
+        "type": "string[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "mimetypes",
+        "type": "string[]"
       },
       {
         "indexed": false,
@@ -481,6 +512,31 @@
       }
     ],
     "name": "acceptParticipant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "cleanupId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Params.AddCleanupUpdatesParams",
+        "name": "params",
+        "type": "tuple"
+      }
+    ],
+    "name": "addCleanupUpdates",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

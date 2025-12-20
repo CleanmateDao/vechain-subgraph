@@ -23,7 +23,9 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     .concat(Bytes.fromUTF8("reward_earned"));
   let transaction = new Transaction(transactionId.toHex());
   transaction.user = event.params.participant;
-  transaction.cleanupId = event.params.cleanupId.isZero() ? null : event.params.cleanupId;
+  transaction.cleanupId = event.params.cleanupId.isZero()
+    ? null
+    : event.params.cleanupId;
   transaction.streakSubmissionId = event.params.streakSubmissionId;
   transaction.amount = event.params.amount;
   transaction.transactionType = "RECEIVE";
@@ -54,7 +56,8 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   // Update CleanupParticipant (only if cleanupId is not zero)
   if (!event.params.cleanupId.isZero()) {
     let cleanupId = event.params.cleanupId.toString();
-    let participantId = cleanupId + "-" + event.params.participant.toHexString();
+    let participantId =
+      cleanupId + "-" + event.params.participant.toHexString();
     let participant = CleanupParticipant.load(participantId);
     if (participant != null) {
       // Ensure user field is set (for backward compatibility with existing data)
@@ -80,9 +83,11 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   notification.title = "Reward Earned";
   notification.message =
     "You have earned a reward for participating in a cleanup event.";
-  notification.relatedEntity = event.params.cleanupId.isZero() ? null : event.params.cleanupId.toString();
+  notification.relatedEntity = event.params.cleanupId.isZero()
+    ? null
+    : event.params.cleanupId.toString();
   notification.relatedEntityType = "cleanup";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -153,7 +158,7 @@ export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
   notification.message = "You have successfully claimed your rewards.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;

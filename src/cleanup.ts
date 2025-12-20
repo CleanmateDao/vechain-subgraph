@@ -3,6 +3,7 @@ import {
   CleanupPublished as CleanupPublishedEvent,
   CleanupStatusUpdated as CleanupStatusUpdatedEvent,
   CleanupUnpublished as CleanupUnpublishedEvent,
+  CleanupUpdatesAdded as CleanupUpdatesAddedEvent,
   ParticipantAccepted as ParticipantAcceptedEvent,
   ParticipantApplied as ParticipantAppliedEvent,
   ParticipantRejected as ParticipantRejectedEvent,
@@ -11,8 +12,9 @@ import {
 import {
   Cleanup,
   CleanupParticipant,
+  CleanupUpdate,
   Notification,
-  ProofOfWorkMedia,
+  ProofOfWork,
   User,
 } from "../generated/schema";
 import { Bytes, BigInt } from "@graphprotocol/graph-ts";
@@ -27,6 +29,7 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
     cleanup.published = false;
     cleanup.proofOfWorkSubmitted = false;
     cleanup.rewardsDistributed = false;
+    cleanup.updatesCount = BigInt.fromI32(0);
   }
 
   cleanup.organizer = event.params.organizer;
@@ -41,7 +44,7 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
   cleanup.startTime = event.params.startTime;
   cleanup.endTime = event.params.endTime;
   cleanup.maxParticipants = event.params.maxParticipants;
-  cleanup.rewardAmount = event.params.rewardAmount;
+  cleanup.rewardAmount = BigInt.fromI32(0);
   cleanup.createdAt = event.block.timestamp;
   cleanup.updatedAt = event.block.timestamp;
   cleanup.save();
@@ -99,6 +102,7 @@ export function handleParticipantAccepted(
     cleanup.published = false;
     cleanup.proofOfWorkSubmitted = false;
     cleanup.rewardsDistributed = false;
+    cleanup.updatesCount = BigInt.fromI32(0);
     cleanup.createdAt = event.block.timestamp;
     cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
@@ -148,7 +152,7 @@ export function handleParticipantAccepted(
     "Your application to join the cleanup event has been accepted.";
   notification.relatedEntity = cleanupId;
   notification.relatedEntityType = "cleanup";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -168,6 +172,7 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     cleanup.published = false;
     cleanup.proofOfWorkSubmitted = false;
     cleanup.rewardsDistributed = false;
+    cleanup.updatesCount = BigInt.fromI32(0);
     cleanup.createdAt = event.block.timestamp;
     cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
@@ -217,7 +222,7 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     "You have successfully applied to join the cleanup event.";
   notification.relatedEntity = cleanupId;
   notification.relatedEntityType = "cleanup";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -239,6 +244,7 @@ export function handleParticipantRejected(
     cleanup.published = false;
     cleanup.proofOfWorkSubmitted = false;
     cleanup.rewardsDistributed = false;
+    cleanup.updatesCount = BigInt.fromI32(0);
     cleanup.createdAt = event.block.timestamp;
     cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
@@ -288,7 +294,7 @@ export function handleParticipantRejected(
     "Your application to join the cleanup event has been rejected.";
   notification.relatedEntity = cleanupId;
   notification.relatedEntityType = "cleanup";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -303,7 +309,16 @@ export function handleProofOfWorkSubmitted(
   let cleanup = Cleanup.load(cleanupId);
   if (cleanup != null) {
     cleanup.proofOfWorkSubmitted = true;
-    cleanup.proofOfWorkMediaCount = event.params.mediaCount;
+
+    let proofOfWorkId = cleanupId + "-" + event.params.submittedAt.toString();
+    let proofOfWork = new ProofOfWork(proofOfWorkId);
+
+    proofOfWork.cleanup = cleanupId;
+    proofOfWork.ipfsHashes = event.params.ipfsHashes;
+    proofOfWork.mimetypes = event.params.mimetypes;
+    proofOfWork.submittedAt = event.params.submittedAt;
+    proofOfWork.save();
+
     cleanup.proofOfWorkSubmittedAt = event.params.submittedAt;
     cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
@@ -323,7 +338,75 @@ export function handleProofOfWorkSubmitted(
     "Proof of work has been submitted for the cleanup event.";
   notification.relatedEntity = cleanupId;
   notification.relatedEntityType = "cleanup";
-  notification.read = false;
+
+  notification.createdAt = event.block.timestamp;
+  notification.blockNumber = event.block.number;
+  notification.transactionHash = event.transaction.hash;
+  notification.save();
+}
+
+export function handleCleanupUpdatesAdded(
+  event: CleanupUpdatesAddedEvent
+): void {
+  // Ensure Cleanup exists
+  let cleanupId = event.params.cleanupId.toString();
+  let cleanup = Cleanup.load(cleanupId);
+  if (cleanup == null) {
+    cleanup = new Cleanup(cleanupId);
+    cleanup.organizer = Bytes.fromI32(0); // Will be set when CleanupCreated is handled
+    cleanup.metadata = "";
+    cleanup.date = BigInt.fromI32(0);
+    cleanup.status = 0;
+    cleanup.published = false;
+    cleanup.proofOfWorkSubmitted = false;
+    cleanup.rewardsDistributed = false;
+    cleanup.updatesCount = BigInt.fromI32(0);
+    cleanup.createdAt = event.block.timestamp;
+    cleanup.updatedAt = event.block.timestamp;
+    cleanup.save();
+  }
+
+  // Create CleanupUpdate entity
+  let updateId = event.transaction.hash
+    .concatI32(event.logIndex.toI32())
+    .concat(Bytes.fromUTF8("cleanup_update"))
+    .toHex();
+  let update = new CleanupUpdate(updateId);
+  update.cleanup = cleanupId;
+  update.organizer = event.params.organizer;
+  update.metadata = event.params.metadata;
+  update.addedAt = event.params.addedAt;
+  update.blockNumber = event.block.number;
+  update.transactionHash = event.transaction.hash;
+  update.save();
+
+  // Update cleanup's updates count
+  // Initialize to 0 if not set, then increment
+  let currentCount = cleanup.updatesCount;
+  if (!currentCount) {
+    cleanup.updatesCount = BigInt.fromI32(1);
+  } else {
+    cleanup.updatesCount = currentCount.plus(BigInt.fromI32(1));
+  }
+  cleanup.updatedAt = event.block.timestamp;
+  cleanup.save();
+
+  // Create notification for all participants
+  // Note: We could create notifications for all participants, but for now we'll create one for the organizer
+  // In a production system, you might want to query all participants and create notifications for each
+  let notification = new Notification(
+    event.transaction.hash
+      .concatI32(event.logIndex.toI32())
+      .concat(Bytes.fromUTF8("cleanup_update"))
+      .toHex()
+  );
+  notification.user = event.params.organizer;
+  notification.type = "cleanup_update";
+  notification.title = "Cleanup Update";
+  notification.message = "A new update has been added to the cleanup event.";
+  notification.relatedEntity = cleanupId;
+  notification.relatedEntityType = "cleanup";
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;

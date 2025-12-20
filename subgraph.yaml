@@ -18,6 +18,7 @@ dataSources:
         - CleanupPublished
         - CleanupStatusUpdated
         - CleanupUnpublished
+        - CleanupUpdatesAdded
         - ParticipantAccepted
         - ParticipantApplied
         - ParticipantRejected
@@ -26,7 +27,7 @@ dataSources:
         - name: Cleanup
           file: ./abis/Cleanup.json
       eventHandlers:
-        - event: CleanupCreated(indexed uint256,indexed address,string,string,string,string,string,int256,int256,uint256,uint256,uint256,uint256,uint256)
+        - event: CleanupCreated(indexed uint256,indexed address,string,string,string,string,string,int256,int256,uint256,uint256,uint256,uint256)
           handler: handleCleanupCreated
         - event: CleanupPublished(indexed uint256,indexed address)
           handler: handleCleanupPublished
@@ -34,13 +35,15 @@ dataSources:
           handler: handleCleanupStatusUpdated
         - event: CleanupUnpublished(indexed uint256,indexed address)
           handler: handleCleanupUnpublished
+        - event: CleanupUpdatesAdded(indexed uint256,indexed address,string,uint256)
+          handler: handleCleanupUpdatesAdded
         - event: ParticipantAccepted(indexed uint256,indexed address,indexed address)
           handler: handleParticipantAccepted
         - event: ParticipantApplied(indexed uint256,indexed address,uint256)
           handler: handleParticipantApplied
         - event: ParticipantRejected(indexed uint256,indexed address,indexed address)
           handler: handleParticipantRejected
-        - event: ProofOfWorkSubmitted(indexed uint256,indexed address,uint256,uint256)
+        - event: ProofOfWorkSubmitted(indexed uint256,indexed address,string[],string[],uint256)
           handler: handleProofOfWorkSubmitted
       file: ./src/cleanup.ts
   - kind: ethereum

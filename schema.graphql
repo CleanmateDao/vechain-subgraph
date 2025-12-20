@@ -52,9 +52,11 @@ type Cleanup @entity(immutable: false) {
   participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
   # Proof of work
   proofOfWorkSubmitted: Boolean!
-  proofOfWorkMedia: [ProofOfWorkMedia!]! @derivedFrom(field: "cleanup")
-  proofOfWorkMediaCount: BigInt
+  proofOfWork: ProofOfWork! @derivedFrom(field: "cleanup")
   proofOfWorkSubmittedAt: BigInt
+  # Updates
+  updates: [CleanupUpdate!]! @derivedFrom(field: "cleanup")
+  updatesCount: BigInt
   # Location
   location: String # address
   city: String
@@ -69,14 +71,25 @@ type Cleanup @entity(immutable: false) {
   rewardsDistributedAt: BigInt
 }
 
-# Proof of Work Media - stores proof of work media URLs with MIME types
-type ProofOfWorkMedia @entity(immutable: true) {
-  id: ID! # cleanup ID + media index or unique identifier
+# Proof of Work - stores proof of work media URLs with MIME types
+type ProofOfWork @entity(immutable: true) {
+  id: ID! # cleanup ID + submission timestamp + media index
   cleanup: Cleanup!
-  url: String! # IPFS hash or URL
-  mimeType: String!
-  uploadedAt: BigInt!
+  # Media/Proof
+  ipfsHashes: [String!]!
+  mimetypes: [String!]!
   submittedAt: BigInt!
+}
+
+# Cleanup Update - tracks updates/announcements for cleanup events
+type CleanupUpdate @entity(immutable: true) {
+  id: ID! # transaction hash + log index
+  cleanup: Cleanup!
+  organizer: Bytes! # address of organizer/editor who added the update
+  metadata: String! # update content/metadata
+  addedAt: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
 }
 
 # Cleanup Participant - tracks participant state per cleanup
@@ -117,7 +130,6 @@ type Notification @entity(immutable: true) {
   message: String!
   relatedEntity: String # ID of related entity (cleanup ID as string, user address, etc.)
   relatedEntityType: String # type of related entity
-  read: Boolean!
   createdAt: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!

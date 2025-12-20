@@ -90,7 +90,7 @@ export function handleStreakerJoined(event: StreakerJoinedEvent): void {
   // Use user address as related entity for streak join
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -141,7 +141,7 @@ export function handleStreakSubmitted(event: StreakSubmittedEvent): void {
   // Use submissionId as string for relatedEntity
   notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -195,7 +195,7 @@ export function handleStreakApproved(event: StreakApprovedEvent): void {
   // Use submissionId as string for relatedEntity
   notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -249,7 +249,7 @@ export function handleStreakRejected(event: StreakRejectedEvent): void {
   // Use submissionId as string for relatedEntity
   notification.relatedEntity = event.params.submissionId.toString();
   notification.relatedEntityType = "streak_submission";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;

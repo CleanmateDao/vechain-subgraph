@@ -44,7 +44,7 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   notification.message = "Your account has been successfully registered.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -81,7 +81,7 @@ export function handleEmailVerified(event: EmailVerifiedEvent): void {
   notification.message = "Your email has been successfully verified.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -126,7 +126,7 @@ export function handleKYCStatusUpdated(event: KYCStatusUpdatedEvent): void {
     "Your KYC status has been updated to " + statusNames[statusIndex] + ".";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -163,7 +163,7 @@ export function handleUserProfileUpdated(event: UserProfileUpdatedEvent): void {
   notification.message = "Your profile has been successfully updated.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -219,7 +219,7 @@ export function handleUserReferred(event: UserReferredEvent): void {
     "A new user has been referred using your referral code.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -259,7 +259,7 @@ export function handleOrganizerStatusUpdated(
     : "Your organizer status has been revoked.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -311,7 +311,7 @@ export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
   notification.message = "You have been added as a team member.";
   notification.relatedEntity = event.params.organizer.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
@@ -341,7 +341,7 @@ export function handleTeamMemberRemoved(event: TeamMemberRemovedEvent): void {
   notification.message = "You have been removed from the team.";
   notification.relatedEntity = event.params.organizer.toHexString();
   notification.relatedEntityType = "user";
-  notification.read = false;
+
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
   notification.transactionHash = event.transaction.hash;
