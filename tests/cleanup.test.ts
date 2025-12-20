@@ -17,7 +17,7 @@ import { createCleanupCreatedEvent } from "./cleanup-utils"
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let cleanupAddress = Address.fromString(
+    let cleanupId = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
     let organizer = Address.fromString(
@@ -26,7 +26,7 @@ describe("Describe entity assertions", () => {
     let metadata = "Example string value"
     let date = BigInt.fromI32(234)
     let newCleanupCreatedEvent = createCleanupCreatedEvent(
-      cleanupAddress,
+      cleanupId,
       organizer,
       metadata,
       date
@@ -48,7 +48,7 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "CleanupCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "cleanupAddress",
+      "cleanupId",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(

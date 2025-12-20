@@ -12,7 +12,7 @@ import {
 } from "../generated/Cleanup/Cleanup"
 
 export function createCleanupCreatedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   organizer: Address,
   metadata: string,
   date: BigInt
@@ -23,8 +23,8 @@ export function createCleanupCreatedEvent(
 
   cleanupCreatedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   cleanupCreatedEvent.parameters.push(
@@ -41,7 +41,7 @@ export function createCleanupCreatedEvent(
 }
 
 export function createCleanupPublishedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   admin: Address
 ): CleanupPublished {
   let cleanupPublishedEvent = changetype<CleanupPublished>(newMockEvent())
@@ -50,8 +50,8 @@ export function createCleanupPublishedEvent(
 
   cleanupPublishedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   cleanupPublishedEvent.parameters.push(
@@ -62,7 +62,7 @@ export function createCleanupPublishedEvent(
 }
 
 export function createCleanupStatusUpdatedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   oldStatus: i32,
   newStatus: i32
 ): CleanupStatusUpdated {
@@ -73,8 +73,8 @@ export function createCleanupStatusUpdatedEvent(
 
   cleanupStatusUpdatedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   cleanupStatusUpdatedEvent.parameters.push(
@@ -94,7 +94,7 @@ export function createCleanupStatusUpdatedEvent(
 }
 
 export function createCleanupUnpublishedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   admin: Address
 ): CleanupUnpublished {
   let cleanupUnpublishedEvent = changetype<CleanupUnpublished>(newMockEvent())
@@ -103,8 +103,8 @@ export function createCleanupUnpublishedEvent(
 
   cleanupUnpublishedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   cleanupUnpublishedEvent.parameters.push(
@@ -115,7 +115,7 @@ export function createCleanupUnpublishedEvent(
 }
 
 export function createParticipantAcceptedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   participant: Address,
   organizer: Address
 ): ParticipantAccepted {
@@ -125,8 +125,8 @@ export function createParticipantAcceptedEvent(
 
   participantAcceptedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   participantAcceptedEvent.parameters.push(
@@ -143,7 +143,7 @@ export function createParticipantAcceptedEvent(
 }
 
 export function createParticipantAppliedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   participant: Address,
   appliedAt: BigInt
 ): ParticipantApplied {
@@ -153,8 +153,8 @@ export function createParticipantAppliedEvent(
 
   participantAppliedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   participantAppliedEvent.parameters.push(
@@ -174,7 +174,7 @@ export function createParticipantAppliedEvent(
 }
 
 export function createParticipantRejectedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   participant: Address,
   organizer: Address
 ): ParticipantRejected {
@@ -184,8 +184,8 @@ export function createParticipantRejectedEvent(
 
   participantRejectedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   participantRejectedEvent.parameters.push(
@@ -202,7 +202,7 @@ export function createParticipantRejectedEvent(
 }
 
 export function createProofOfWorkSubmittedEvent(
-  cleanupAddress: Address,
+  cleanupId: Address,
   organizer: Address,
   mediaCount: BigInt,
   submittedAt: BigInt
@@ -214,8 +214,8 @@ export function createProofOfWorkSubmittedEvent(
 
   proofOfWorkSubmittedEvent.parameters.push(
     new ethereum.EventParam(
-      "cleanupAddress",
-      ethereum.Value.fromAddress(cleanupAddress)
+      "cleanupId",
+      ethereum.Value.fromAddress(cleanupId)
     )
   )
   proofOfWorkSubmittedEvent.parameters.push(
