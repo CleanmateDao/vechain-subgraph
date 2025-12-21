@@ -52,7 +52,7 @@ type Cleanup @entity(immutable: false) {
   participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
   # Proof of work
   proofOfWorkSubmitted: Boolean!
-  proofOfWork: ProofOfWork! @derivedFrom(field: "cleanup")
+  proofOfWork: ProofOfWork @derivedFrom(field: "cleanup")
   proofOfWorkSubmittedAt: BigInt
   # Updates
   updates: [CleanupUpdate!]! @derivedFrom(field: "cleanup")
@@ -71,7 +71,7 @@ type Cleanup @entity(immutable: false) {
   rewardsDistributedAt: BigInt
 }
 
-# Proof of Work - stores proof of work media URLs with MIME types
+# Proof of Work - stores Proof of Work Medias URLs with MIME types
 type ProofOfWork @entity(immutable: true) {
   id: ID! # cleanup ID + submission timestamp + media index
   cleanup: Cleanup!
