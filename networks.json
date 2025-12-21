@@ -23,24 +23,24 @@
   },
   "testnet": {
     "Cleanup": {
-      "address": "0x2e8c06a002b34d8ffc5f0d9e5eff6d01b1a16023",
-      "startBlock": 23618000
+      "address": "0xc54986ec83dc06805b2da4294ce79c6450dca46b",
+      "startBlock": 23627000
     },
     "UserRegistry": {
-      "address": "0xef1a8111dfc8a35507cb34011d3ee4dd767371d7",
-      "startBlock": 23618000
+      "address": "0x8a5f7a30a00133ef21dc3111bd7784b3c60878d5",
+      "startBlock": 23627000
     },
     "RewardsManager": {
-      "address": "0x6fca51b13361ffb21cf60ab2092a38f27343dcb3",
-      "startBlock": 23618000
+      "address": "0x2d3decfff6f9e033fcbaac976eea96159137818a",
+      "startBlock": 23627000
     },
     "AddressesProvider": {
-      "address": "0xb4cb6cc5f96a914e36ac421ec874b1e77cd0fa4a",
-      "startBlock": 23618000
+      "address": "0xac22fef09ad14639b02428cfeeb99cb3fe9836c5",
+      "startBlock": 23627000
     },
     "Streak": {
-      "address": "0x1f0006665384718a35500126d8b3a22c62825ca1",
-      "startBlock": 23618000
+      "address": "0x4d3a306ab4c898420b8447e6c0799e4f94753686",
+      "startBlock": 23627000
     }
   }
 }
