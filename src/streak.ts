@@ -25,6 +25,7 @@ function loadOrCreateUser(userAddress: Bytes, timestamp: BigInt): User {
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
     user.save();
   }
   return user;

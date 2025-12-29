@@ -47,6 +47,7 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
   }
   // Update total rewards earned and pending rewards
   user.totalRewardsEarned = user.totalRewardsEarned.plus(event.params.amount);
@@ -135,6 +136,7 @@ export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
   }
   user.totalRewardsClaimed = user.totalRewardsClaimed.plus(event.params.amount);
   // Calculate pending rewards, ensuring it doesn't go negative

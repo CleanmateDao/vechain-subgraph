@@ -120,6 +120,7 @@ export function handleParticipantAccepted(
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
     user.save();
   }
 
@@ -190,6 +191,7 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
     user.save();
   }
 
@@ -262,6 +264,7 @@ export function handleParticipantRejected(
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
     user.save();
   }
 

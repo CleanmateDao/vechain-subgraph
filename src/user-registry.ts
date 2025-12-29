@@ -11,7 +11,7 @@ import {
   TeamMemberPermissionsUpdated as TeamMemberPermissionsUpdatedEvent,
 } from "../generated/UserRegistry/UserRegistry";
 import { User, TeamMembership, Notification } from "../generated/schema";
-import { Bytes, BigInt, store } from "@graphprotocol/graph-ts";
+import { Bytes, BigInt } from "@graphprotocol/graph-ts";
 
 export function handleUserRegistered(event: UserRegisteredEvent): void {
   // Load or create User entity
@@ -24,6 +24,7 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
     user.totalRewardsEarned = BigInt.fromI32(0);
     user.totalRewardsClaimed = BigInt.fromI32(0);
     user.pendingRewards = BigInt.fromI32(0);
+    user.referralCount = BigInt.fromI32(0);
   }
 
   user.metadata = event.params.metadata;
@@ -52,16 +53,11 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
 }
 
 export function handleEmailVerified(event: EmailVerifiedEvent): void {
-  // Load or create User entity
+  // Load User entity - user must exist (should be created via UserRegistered event)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.kycStatus = 0;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.emailVerified = true;
@@ -89,16 +85,11 @@ export function handleEmailVerified(event: EmailVerifiedEvent): void {
 }
 
 export function handleKYCStatusUpdated(event: KYCStatusUpdatedEvent): void {
-  // Load or create User entity
+  // Load User entity - user must exist (should be created via UserRegistered event)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.emailVerified = false;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.kycStatus = event.params.newStatus;
@@ -134,16 +125,11 @@ export function handleKYCStatusUpdated(event: KYCStatusUpdatedEvent): void {
 }
 
 export function handleUserProfileUpdated(event: UserProfileUpdatedEvent): void {
-  // Load or create User entity
+  // Load User entity - user must exist (should be created via UserRegistered event)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.metadata = event.params.metadata;
@@ -171,17 +157,11 @@ export function handleUserProfileUpdated(event: UserProfileUpdatedEvent): void {
 }
 
 export function handleReferralCodeSet(event: ReferralCodeSetEvent): void {
-  // Load or create User entity
+  // Load User entity - user must exist (should be created via UserRegistered event)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.referralCode = event.params.referralCode;
@@ -189,21 +169,22 @@ export function handleReferralCodeSet(event: ReferralCodeSetEvent): void {
 }
 
 export function handleUserReferred(event: UserReferredEvent): void {
-  // Load or create User entity for the referred user
+  // Load User entity for the referred user - should exist (created via registerWithReferral)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.referrer = event.params.referrer;
   user.save();
+
+  // Increment referral count for the referrer
+  let referrer = User.load(event.params.referrer);
+  if (referrer != null) {
+    referrer.referralCount = referrer.referralCount.plus(BigInt.fromI32(1));
+    referrer.save();
+  }
 
   // Create notification for referrer
   let notification = new Notification(
@@ -229,16 +210,11 @@ export function handleUserReferred(event: UserReferredEvent): void {
 export function handleOrganizerStatusUpdated(
   event: OrganizerStatusUpdatedEvent
 ): void {
-  // Load or create User entity
+  // Load User entity - user must exist (should be created via UserRegistered event)
   let user = User.load(event.params.user);
   if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.emailVerified = false;
-    user.kycStatus = 0;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    // User doesn't exist, skip this event
+    return;
   }
 
   user.isOrganizer = event.params.isOrganizer;
@@ -267,18 +243,11 @@ export function handleOrganizerStatusUpdated(
 }
 
 export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
-  // Ensure member User exists
+  // Member User must exist (should be created via UserRegistered event)
   let member = User.load(event.params.member);
   if (member == null) {
-    member = new User(event.params.member);
-    member.metadata = "";
-    member.emailVerified = false;
-    member.kycStatus = 0;
-    member.isOrganizer = false;
-    member.registeredAt = event.block.timestamp;
-    member.totalRewardsClaimed = BigInt.fromI32(0);
-    member.pendingRewards = BigInt.fromI32(0);
-    member.save();
+    // Member doesn't exist, skip this event
+    return;
   }
 
   // Create or update TeamMembership
@@ -288,8 +257,19 @@ export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
     membership = new TeamMembership(membershipId.toHex());
     membership.organizer = event.params.organizer;
     membership.member = event.params.member;
+    membership.memberUser = member.id;
     membership.addedAt = event.block.timestamp;
     membership.lastUpdatedAt = event.block.timestamp;
+    membership.deleted = false;
+  } else {
+    // Ensure User reference is set (for existing memberships)
+    membership.memberUser = member.id;
+  }
+
+  // If membership was previously deleted, restore it
+  if (membership.deleted) {
+    membership.deleted = false;
+    membership.deletedAt = null;
   }
 
   membership.canEditCleanups = event.params.canEditCleanups;
@@ -319,13 +299,13 @@ export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
 }
 
 export function handleTeamMemberRemoved(event: TeamMemberRemovedEvent): void {
-  // Remove TeamMembership
+  // Mark TeamMembership as deleted
   let membershipId = event.params.organizer.concat(event.params.member);
   let membership = TeamMembership.load(membershipId.toHex());
   if (membership != null) {
-    // In The Graph, we can't actually delete entities, but we can mark them as removed
-    // For now, we'll just remove the entity from the store
-    store.remove("TeamMembership", membershipId.toHex());
+    membership.deleted = true;
+    membership.deletedAt = event.block.timestamp;
+    membership.save();
   }
 
   // Create notification for team member
@@ -355,6 +335,12 @@ export function handleTeamMemberPermissionsUpdated(
   let membershipId = event.params.organizer.concat(event.params.member);
   let membership = TeamMembership.load(membershipId.toHex());
   if (membership != null) {
+    // Ensure User reference is set (safety check for existing memberships)
+    let member = User.load(event.params.member);
+    if (member != null) {
+      membership.memberUser = member.id;
+    }
+
     membership.canEditCleanups = event.params.canEditCleanups;
     membership.canManageParticipants = event.params.canManageParticipants;
     membership.canSubmitProof = event.params.canSubmitProof;
