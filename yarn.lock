@@ -662,7 +662,7 @@ ansi-regex@^6.0.1:
 
 ansi-styles@^3.2.1:
   version "3.2.1"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20263e50b12be0f04b8dedbf07520ce841d"
   integrity sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
   dependencies:
     color-convert "^1.9.0"
@@ -725,7 +725,7 @@ assemblyscript@0.27.31:
   resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.27.31.tgz#07412b1bc42c67f78080dbaddca030ab74d3b9b2"
   integrity sha512-Ra8kiGhgJQGZcBxjtMcyVRxOEJZX64kd+XGpjWzjcjgxWJVv+CAQO0aDBk4GQVhjYbOkATarC83mHjAVGtwPBQ==
   dependencies:
-    binaryen "116.0.0-nightly.20240114"
+    binaryen "116.0.0-nightly.20260114"
     long "^5.2.1"
 
 async@^3.2.6:
@@ -762,9 +762,9 @@ binaryen@102.0.0-nightly.20211028:
   resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-102.0.0-nightly.20211028.tgz#8f1efb0920afd34509e342e37f84313ec936afb2"
   integrity sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==
 
-binaryen@116.0.0-nightly.20240114:
-  version "116.0.0-nightly.20240114"
-  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-116.0.0-nightly.20240114.tgz#ad8bfbde77d4cb4715b93997114eefc30f45155b"
+binaryen@116.0.0-nightly.20260114:
+  version "116.0.0-nightly.20260114"
+  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-116.0.0-nightly.20260114.tgz#ad8bfbde77d4cb4715b93997114eefc30f45155b"
   integrity sha512-0GZrojJnuhoe+hiwji7QFaL3tBlJoA+KFUN7ouYSDGZLSo9CKM8swQX8n/UcbR0d1VuZKU+nhogNzv423JEu5A==
 
 blob-to-it@^2.0.5:
