@@ -33,6 +33,11 @@
   },
   {
     "inputs": [],
+    "name": "DuplicateEmail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "EmailAlreadySet",
     "type": "error"
   },
@@ -64,6 +69,11 @@
   {
     "inputs": [],
     "name": "NotOrganizer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotPerson",
     "type": "error"
   },
   {
@@ -516,6 +526,32 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "completeKYCWithPassport",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "emailToAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -886,6 +922,24 @@
       }
     ],
     "name": "setReferralCode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "referralCode",
+        "type": "string"
+      }
+    ],
+    "name": "setUserReferralCode",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

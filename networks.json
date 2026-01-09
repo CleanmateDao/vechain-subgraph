@@ -19,28 +19,36 @@
     "Streak": {
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 0
+    },
+    "NativePassport": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
     }
   },
   "testnet": {
     "Cleanup": {
-      "address": "0x96778a32052cad03d08a5dbb8ac8055734488bdb",
-      "startBlock": 23627000
+      "address": "0x90c63911ab2bca0a686d732f0be7fb0fbe25971b",
+      "startBlock": 23742600
     },
     "UserRegistry": {
-      "address": "0x6106aa5bdf000a6d96ebac81496c8d6f1886e849",
-      "startBlock": 23627000
+      "address": "0xcf07d7c4ab78d0d450e1792a1a5efa157e1832fb",
+      "startBlock": 23742600
     },
     "RewardsManager": {
-      "address": "0x4c0d4c4879cd5ca3a8ac8a6988872d44d418e9f8",
-      "startBlock": 23627000
+      "address": "0x05a7fb49fa286fb0927436a8dcbc09b13a459cd1",
+      "startBlock": 23742600
     },
     "AddressesProvider": {
-      "address": "0x76a88621221cba2c363f7f82315f451dd7afeb34",
-      "startBlock": 23627000
+      "address": "0xeb832ec71c6bd22e5b6ca9f83dab3133c1c0c7e6",
+      "startBlock": 23742600
     },
     "Streak": {
-      "address": "0x35925ceb96a9d9fdd8c6998fe74bf208c6e479aa",
-      "startBlock": 23627000
+      "address": "0xcee1f35891400a29c84800426c9df75f399baaf3",
+      "startBlock": 23742600
+    },
+    "NativePassport": {
+      "address": "0x5251a9b1de7bedf7d75adebfa4145dc6162a8600",
+      "startBlock": 23742600
     }
   }
 }

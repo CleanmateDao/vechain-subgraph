@@ -10,6 +10,11 @@
         "internalType": "bytes32",
         "name": "appIdValue",
         "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainIdValue",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -75,16 +80,6 @@
   },
   {
     "inputs": [],
-    "name": "EnforcedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ExpectedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "InsufficientPendingRewards",
     "type": "error"
   },
@@ -141,22 +136,17 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "expectedSigner",
+        "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "length",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "actualSigner",
+        "type": "address"
       }
     ],
-    "name": "StringsInsufficientHexLength",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Unauthorized",
+    "name": "UnauthorizedSigner",
     "type": "error"
   },
   {
@@ -211,13 +201,38 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "account",
+        "name": "oldToken",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newToken",
         "type": "address"
       }
     ],
-    "name": "Paused",
+    "name": "OffRampTokenUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldTreasury",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newTreasury",
+        "type": "address"
+      }
+    ],
+    "name": "OffRampTreasuryUpdated",
     "type": "event"
   },
   {
@@ -255,25 +270,6 @@
       }
     ],
     "name": "RewardEarned",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardsClaimed",
     "type": "event"
   },
   {
@@ -430,13 +426,25 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "account",
+        "name": "user",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "Unpaused",
+    "name": "TokenTransferred",
     "type": "event"
   },
   {
@@ -505,68 +513,16 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Params.ClaimRewardsParams",
-        "name": "params",
-        "type": "tuple"
-      }
-    ],
-    "name": "claimRewards",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Params.ClaimRewardsWithPermitParams",
-        "name": "params",
-        "type": "tuple"
-      },
+    "inputs": [],
+    "name": "chainId",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "deadline",
+        "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "v",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "r",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "s",
-        "type": "bytes32"
       }
     ],
-    "name": "claimRewardsWithPermit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -587,6 +543,36 @@
             "internalType": "uint256[]",
             "name": "amounts",
             "type": "uint256[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofTypes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofValues",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "impactCodes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "impactValues",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
           }
         ],
         "internalType": "struct Params.DistributeRewardsParams",
@@ -612,6 +598,36 @@
             "internalType": "uint256[]",
             "name": "amounts",
             "type": "uint256[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofTypes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofValues",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "impactCodes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "impactValues",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
           }
         ],
         "internalType": "struct Params.DistributeStreaksRewardParams",
@@ -631,6 +647,19 @@
       {
         "internalType": "uint256",
         "name": "funds",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getChainId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -719,19 +748,25 @@
   },
   {
     "inputs": [],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "offRampToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "paused",
+    "name": "offRampTreasury",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "address",
         "name": "",
-        "type": "bool"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -785,12 +820,22 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "pending",
+        "name": "bonus",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "claimed",
+        "name": "referral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "others",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "received",
         "type": "uint256"
       }
     ],
@@ -834,6 +879,36 @@
             "internalType": "enum Params.RewardType[]",
             "name": "rewardTypes",
             "type": "uint8[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofTypes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "proofValues",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "impactCodes",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "impactValues",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
           }
         ],
         "internalType": "struct Params.SendRewardsParams",
@@ -868,6 +943,32 @@
       }
     ],
     "name": "setAppId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newToken",
+        "type": "address"
+      }
+    ],
+    "name": "setToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newTreasury",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasury",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -924,8 +1025,51 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "unpause",
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Params.TransferWithPermitParams",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "embeddedAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "transferWithPermit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

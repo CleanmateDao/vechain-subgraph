@@ -114,12 +114,11 @@ export function handleParticipantAccepted(
     user = new User(event.params.participant);
     user.metadata = "";
     user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
     user.registeredAt = event.block.timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
     user.save();
   }
@@ -185,12 +184,11 @@ export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
     user = new User(event.params.participant);
     user.metadata = "";
     user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
     user.registeredAt = event.block.timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
     user.save();
   }
@@ -258,12 +256,11 @@ export function handleParticipantRejected(
     user = new User(event.params.participant);
     user.metadata = "";
     user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
     user.registeredAt = event.block.timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
     user.save();
   }

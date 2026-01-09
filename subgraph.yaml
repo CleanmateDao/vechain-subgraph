@@ -7,8 +7,8 @@ dataSources:
     network: test
     source:
       abi: Cleanup
-      address: "0x96778a32052cad03d08a5dbb8ac8055734488bdb"
-      startBlock: 23627000
+      address: "0x90c63911ab2bca0a686d732f0be7fb0fbe25971b"
+      startBlock: 23742600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -51,8 +51,8 @@ dataSources:
     network: test
     source:
       abi: UserRegistry
-      address: "0x6106aa5bdf000a6d96ebac81496c8d6f1886e849"
-      startBlock: 23627000
+      address: "0xcf07d7c4ab78d0d450e1792a1a5efa157e1832fb"
+      startBlock: 23742600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -60,11 +60,9 @@ dataSources:
       entities:
         - UserRegistered
         - EmailVerified
-        - KYCStatusUpdated
         - UserProfileUpdated
         - ReferralCodeSet
         - UserReferred
-        - OrganizerStatusUpdated
         - TeamMemberAdded
         - TeamMemberRemoved
         - TeamMemberPermissionsUpdated
@@ -76,16 +74,12 @@ dataSources:
           handler: handleUserRegistered
         - event: EmailVerified(indexed address)
           handler: handleEmailVerified
-        - event: KYCStatusUpdated(indexed address,uint8,uint8)
-          handler: handleKYCStatusUpdated
         - event: UserProfileUpdated(indexed address,string)
           handler: handleUserProfileUpdated
         - event: ReferralCodeSet(indexed address,string)
           handler: handleReferralCodeSet
         - event: UserReferred(indexed address,indexed address,string)
           handler: handleUserReferred
-        - event: OrganizerStatusUpdated(indexed address,bool)
-          handler: handleOrganizerStatusUpdated
         - event: TeamMemberAdded(indexed address,indexed address,bool,bool,bool)
           handler: handleTeamMemberAdded
         - event: TeamMemberRemoved(indexed address,indexed address)
@@ -98,8 +92,8 @@ dataSources:
     network: test
     source:
       abi: RewardsManager
-      address: "0x4c0d4c4879cd5ca3a8ac8a6988872d44d418e9f8"
-      startBlock: 23627000
+      address: "0x05a7fb49fa286fb0927436a8dcbc09b13a459cd1"
+      startBlock: 23742600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -107,7 +101,6 @@ dataSources:
       entities:
         - RewardEarned
         - RewardsDistributed
-        - RewardsClaimed
         - AppIdUpdated
         - RewardsPoolUpdated
       abis:
@@ -118,8 +111,6 @@ dataSources:
           handler: handleRewardEarned
         - event: RewardsDistributed(indexed uint256,indexed address,uint256,uint256)
           handler: handleRewardsDistributed
-        - event: RewardsClaimed(indexed address,uint256)
-          handler: handleRewardsClaimed
         - event: AppIdUpdated(bytes32,bytes32)
           handler: handleAppIdUpdated
         - event: RewardsPoolUpdated(indexed address,indexed address)
@@ -130,8 +121,8 @@ dataSources:
     network: test
     source:
       abi: AddressesProvider
-      address: "0x76a88621221cba2c363f7f82315f451dd7afeb34"
-      startBlock: 23627000
+      address: "0xeb832ec71c6bd22e5b6ca9f83dab3133c1c0c7e6"
+      startBlock: 23742600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -150,8 +141,8 @@ dataSources:
     network: test
     source:
       abi: Streak
-      address: "0x35925ceb96a9d9fdd8c6998fe74bf208c6e479aa"
-      startBlock: 23627000
+      address: "0xcee1f35891400a29c84800426c9df75f399baaf3"
+      startBlock: 23742600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -174,3 +165,23 @@ dataSources:
         - event: StreakRejected(indexed address,indexed uint256,string)
           handler: handleStreakRejected
       file: ./src/streak.ts
+  - kind: ethereum
+    name: NativePassport
+    network: test
+    source:
+      abi: NativePassport
+      address: "0x5251a9b1de7bedf7d75adebfa4145dc6162a8600"
+      startBlock: 23742600
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - KYCStatusUpdated
+      abis:
+        - name: NativePassport
+          file: ./abis/NativePassport.json
+      eventHandlers:
+        - event: KYCStatusUpdated(indexed address,uint8,string)
+          handler: handleKYCStatusUpdated
+      file: ./src/native-passport.ts

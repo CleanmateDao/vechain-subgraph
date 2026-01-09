@@ -1,7 +1,6 @@
 import {
   RewardEarned as RewardEarnedEvent,
   RewardsDistributed as RewardsDistributedEvent,
-  RewardsClaimed as RewardsClaimedEvent,
   AppIdUpdated as AppIdUpdatedEvent,
   RewardsPoolUpdated as RewardsPoolUpdatedEvent,
 } from "../generated/RewardsManager/RewardsManager";
@@ -41,17 +40,26 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     user = new User(event.params.participant);
     user.metadata = "";
     user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
     user.registeredAt = event.block.timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
   }
-  // Update total rewards earned and pending rewards
-  user.totalRewardsEarned = user.totalRewardsEarned.plus(event.params.amount);
-  user.pendingRewards = user.pendingRewards.plus(event.params.amount);
+  // Update rewards based on rewardType (0=REFERRAL, 1=BONUS, 4=OTHERS)
+  // Always increment received (total)
+  user.received = user.received.plus(event.params.amount);
+  if (event.params.rewardType == 0) {
+    // REFERRAL
+    user.referral = user.referral.plus(event.params.amount);
+  } else if (event.params.rewardType == 1) {
+    // BONUS
+    user.bonus = user.bonus.plus(event.params.amount);
+  } else if (event.params.rewardType == 4) {
+    // OTHERS
+    user.others = user.others.plus(event.params.amount);
+  }
   user.save();
 
   // Update CleanupParticipant (only if cleanupId is not zero)
@@ -106,65 +114,6 @@ export function handleRewardsDistributed(event: RewardsDistributedEvent): void {
     cleanup.rewardsDistributedAt = event.block.timestamp;
     cleanup.save();
   }
-}
-
-export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
-  // Create Transaction entity for CLAIM transaction
-  let transactionId = event.transaction.hash
-    .concatI32(event.logIndex.toI32())
-    .concat(Bytes.fromUTF8("rewards_claimed"));
-  let transaction = new Transaction(transactionId.toHex());
-  transaction.user = event.params.user;
-  transaction.cleanupId = null; // CLAIM transactions don't have a specific cleanup
-  transaction.amount = event.params.amount;
-  transaction.transactionType = "CLAIM";
-  // rewardType is nullable and defaults to null, so we don't need to set it
-  transaction.timestamp = event.block.timestamp;
-  transaction.blockNumber = event.block.number;
-  transaction.transactionHash = event.transaction.hash;
-  transaction.save();
-
-  // Update User state
-  let user = User.load(event.params.user);
-  if (user == null) {
-    user = new User(event.params.user);
-    user.metadata = "";
-    user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
-    user.registeredAt = event.block.timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
-    user.referralCount = BigInt.fromI32(0);
-  }
-  user.totalRewardsClaimed = user.totalRewardsClaimed.plus(event.params.amount);
-  // Calculate pending rewards, ensuring it doesn't go negative
-  if (user.pendingRewards >= event.params.amount) {
-    user.pendingRewards = user.pendingRewards.minus(event.params.amount);
-  } else {
-    user.pendingRewards = BigInt.fromI32(0);
-  }
-  user.save();
-
-  // Create notification
-  let notification = new Notification(
-    event.transaction.hash
-      .concatI32(event.logIndex.toI32())
-      .concat(Bytes.fromUTF8("rewards_claimed"))
-      .toHex()
-  );
-  notification.user = event.params.user;
-  notification.type = "rewards_claimed";
-  notification.title = "Rewards Claimed";
-  notification.message = "You have successfully claimed your rewards.";
-  notification.relatedEntity = event.params.user.toHexString();
-  notification.relatedEntityType = "user";
-
-  notification.createdAt = event.block.timestamp;
-  notification.blockNumber = event.block.number;
-  notification.transactionHash = event.transaction.hash;
-  notification.save();
 }
 
 export function handleAppIdUpdated(event: AppIdUpdatedEvent): void {

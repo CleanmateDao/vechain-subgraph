@@ -19,12 +19,11 @@ function loadOrCreateUser(userAddress: Bytes, timestamp: BigInt): User {
     user = new User(userAddress);
     user.metadata = "";
     user.emailVerified = false;
-    user.kycStatus = 0;
-    user.isOrganizer = false;
     user.registeredAt = timestamp;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
     user.save();
   }

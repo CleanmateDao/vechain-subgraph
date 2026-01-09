@@ -95,6 +95,19 @@
   },
   {
     "inputs": [],
+    "name": "GAS_METER_KEY",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "REWARDS_MANAGER_KEY",
     "outputs": [
       {
@@ -135,6 +148,19 @@
   {
     "inputs": [],
     "name": "USER_REGISTRY_KEY",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VE_BETTER_PASSPORT_KEY",
     "outputs": [
       {
         "internalType": "string",
@@ -211,6 +237,19 @@
   },
   {
     "inputs": [],
+    "name": "getGasMeter",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "gasMeter",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getRewardsManager",
     "outputs": [
       {
@@ -255,6 +294,19 @@
       {
         "internalType": "address",
         "name": "registry",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVeBetterPassport",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "passport",
         "type": "address"
       }
     ],
@@ -320,6 +372,19 @@
         "type": "address"
       }
     ],
+    "name": "setGasMeter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
     "name": "setRewardsManager",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -360,6 +425,19 @@
       }
     ],
     "name": "setUserRegistry",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setVeBetterPassport",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -4,22 +4,21 @@ type User @entity(immutable: false) {
   metadata: String
   email: String # email address (immutable, set once during registration)
   emailVerified: Boolean!
-  kycStatus: Int! # uint8: 0=NOT_STARTED, 1=PENDING, 2=VERIFIED, 3=REJECTED
   referralCode: String
   referrer: Bytes # address of referrer
   referralCount: BigInt! # number of users referred by this user
-  isOrganizer: Boolean!
   registeredAt: BigInt!
   emailVerifiedAt: BigInt
   lastProfileUpdateAt: BigInt
+  # NativePassport reference
+  passport: NativePassport
   # Team membership info (for when user is a team member) - query by member address
   teamMemberships: [TeamMembership!]! @derivedFrom(field: "memberUser")
-  # Total rewards earned (sum of all rewards received)
-  totalRewardsEarned: BigInt!
-  # Total rewards claimed
-  totalRewardsClaimed: BigInt!
-  # Pending rewards (earned but not claimed)
-  pendingRewards: BigInt!
+  # Rewards tracking (matches contract Reward struct)
+  bonus: BigInt! # Bonus rewards received
+  referral: BigInt! # Referral rewards received
+  others: BigInt! # Other types of rewards received
+  received: BigInt! # Total rewards received
 }
 
 # Team Membership - tracks team member relationships
@@ -201,4 +200,16 @@ type UserStreakStats @entity(immutable: false) {
   pendingSubmissions: BigInt!
   totalAmount: BigInt! # total amount from approved submissions
   lastSubmissionAt: BigInt
+}
+
+# NativePassport Entity - tracks KYC verification status from NativePassport contract
+type NativePassport @entity(immutable: false) {
+  id: Bytes! # user address
+  user: Bytes! # address
+  status: Int! # KYCStatus enum: 0=NOT_STARTED, 1=PENDING, 2=VERIFIED, 3=REJECTED
+  reason: String # reason for status (empty string if VERIFIED, error message otherwise)
+  documentType: Int # DocumentType enum: 0=None, 1=NationalID, 2=DriversLicense, 3=Passport, 4=VotersCard, 5=Other
+  updatedAt: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
 }

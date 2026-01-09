@@ -1,16 +1,19 @@
 import {
   UserRegistered as UserRegisteredEvent,
   EmailVerified as EmailVerifiedEvent,
-  KYCStatusUpdated as KYCStatusUpdatedEvent,
   UserProfileUpdated as UserProfileUpdatedEvent,
   ReferralCodeSet as ReferralCodeSetEvent,
   UserReferred as UserReferredEvent,
-  OrganizerStatusUpdated as OrganizerStatusUpdatedEvent,
   TeamMemberAdded as TeamMemberAddedEvent,
   TeamMemberRemoved as TeamMemberRemovedEvent,
   TeamMemberPermissionsUpdated as TeamMemberPermissionsUpdatedEvent,
 } from "../generated/UserRegistry/UserRegistry";
-import { User, TeamMembership, Notification } from "../generated/schema";
+import {
+  User,
+  TeamMembership,
+  Notification,
+  NativePassport,
+} from "../generated/schema";
 import { Bytes, BigInt } from "@graphprotocol/graph-ts";
 
 export function handleUserRegistered(event: UserRegisteredEvent): void {
@@ -19,11 +22,10 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   if (user == null) {
     user = new User(event.params.user);
     user.emailVerified = false;
-    user.kycStatus = 0; // NOT_STARTED
-    user.isOrganizer = false;
-    user.totalRewardsEarned = BigInt.fromI32(0);
-    user.totalRewardsClaimed = BigInt.fromI32(0);
-    user.pendingRewards = BigInt.fromI32(0);
+    user.bonus = BigInt.fromI32(0);
+    user.referral = BigInt.fromI32(0);
+    user.others = BigInt.fromI32(0);
+    user.received = BigInt.fromI32(0);
     user.referralCount = BigInt.fromI32(0);
   }
 
@@ -31,6 +33,24 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   user.email = event.params.email;
   user.registeredAt = event.block.timestamp;
   user.save();
+
+  // Create NativePassport entity for the user
+  let passport = NativePassport.load(event.params.user);
+  if (passport == null) {
+    passport = new NativePassport(event.params.user);
+    passport.user = event.params.user;
+    passport.status = 0; // NOT_STARTED
+    passport.reason = "";
+    passport.documentType = 0; // None
+    passport.updatedAt = event.block.timestamp;
+    passport.blockNumber = event.block.number;
+    passport.transactionHash = event.transaction.hash;
+    passport.save();
+
+    // Link passport to user
+    user.passport = event.params.user;
+    user.save();
+  }
 
   // Create notification
   let notification = new Notification(
@@ -75,46 +95,6 @@ export function handleEmailVerified(event: EmailVerifiedEvent): void {
   notification.type = "email_verified";
   notification.title = "Email Verified";
   notification.message = "Your email has been successfully verified.";
-  notification.relatedEntity = event.params.user.toHexString();
-  notification.relatedEntityType = "user";
-
-  notification.createdAt = event.block.timestamp;
-  notification.blockNumber = event.block.number;
-  notification.transactionHash = event.transaction.hash;
-  notification.save();
-}
-
-export function handleKYCStatusUpdated(event: KYCStatusUpdatedEvent): void {
-  // Load User entity - user must exist (should be created via UserRegistered event)
-  let user = User.load(event.params.user);
-  if (user == null) {
-    // User doesn't exist, skip this event
-    return;
-  }
-
-  user.kycStatus = event.params.newStatus;
-  user.save();
-
-  // Create notification
-  let statusNames = ["NOT_STARTED", "PENDING", "VERIFIED", "REJECTED"];
-  let statusIndex = event.params.newStatus;
-  // Bounds check to prevent array out-of-bounds access
-  if (statusIndex < 0) {
-    statusIndex = 0;
-  } else if (statusIndex >= statusNames.length) {
-    statusIndex = statusNames.length - 1;
-  }
-  let notification = new Notification(
-    event.transaction.hash
-      .concatI32(event.logIndex.toI32())
-      .concat(Bytes.fromUTF8("kyc_status_updated"))
-      .toHex()
-  );
-  notification.user = event.params.user;
-  notification.type = "kyc_status_updated";
-  notification.title = "KYC Status Updated";
-  notification.message =
-    "Your KYC status has been updated to " + statusNames[statusIndex] + ".";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
 
@@ -198,41 +178,6 @@ export function handleUserReferred(event: UserReferredEvent): void {
   notification.title = "New Referral";
   notification.message =
     "A new user has been referred using your referral code.";
-  notification.relatedEntity = event.params.user.toHexString();
-  notification.relatedEntityType = "user";
-
-  notification.createdAt = event.block.timestamp;
-  notification.blockNumber = event.block.number;
-  notification.transactionHash = event.transaction.hash;
-  notification.save();
-}
-
-export function handleOrganizerStatusUpdated(
-  event: OrganizerStatusUpdatedEvent
-): void {
-  // Load User entity - user must exist (should be created via UserRegistered event)
-  let user = User.load(event.params.user);
-  if (user == null) {
-    // User doesn't exist, skip this event
-    return;
-  }
-
-  user.isOrganizer = event.params.isOrganizer;
-  user.save();
-
-  // Create notification
-  let notification = new Notification(
-    event.transaction.hash
-      .concatI32(event.logIndex.toI32())
-      .concat(Bytes.fromUTF8("organizer_status_updated"))
-      .toHex()
-  );
-  notification.user = event.params.user;
-  notification.type = "organizer_status_updated";
-  notification.title = "Organizer Status Updated";
-  notification.message = event.params.isOrganizer
-    ? "You have been granted organizer status."
-    : "Your organizer status has been revoked.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
 
