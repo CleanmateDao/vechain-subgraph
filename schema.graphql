@@ -176,7 +176,7 @@ type StreakSubmission @entity(immutable: false) {
   user: Bytes! # address
   submissionId: BigInt!
   metadata: String!
-  status: Int! # 0=PENDING, 1=APPROVED, 2=REJECTED
+  status: Int! # 0=PENDING, 1=APPROVED, 2=REJECTED, 3=REWARDED
   submittedAt: BigInt!
   reviewedAt: BigInt
   amount: BigInt # amount approved (null if not approved)

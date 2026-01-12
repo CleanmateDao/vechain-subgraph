@@ -12,6 +12,7 @@ import {
   Notification,
   AppIdUpdated,
   RewardsPoolUpdated,
+  StreakSubmission,
 } from "../generated/schema";
 import { Bytes, BigInt } from "@graphprotocol/graph-ts";
 
@@ -80,6 +81,16 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     }
   }
 
+  // Update StreakSubmission status to REWARDED (3) if streakSubmissionId is not zero
+  if (!event.params.streakSubmissionId.isZero()) {
+    let submissionId = event.params.streakSubmissionId.toString();
+    let submission = StreakSubmission.load(submissionId);
+    if (submission != null) {
+      submission.status = 3; // REWARDED
+      submission.save();
+    }
+  }
+
   // Create notification
   let notification = new Notification(
     event.transaction.hash
@@ -112,6 +123,8 @@ export function handleRewardsDistributed(event: RewardsDistributedEvent): void {
     cleanup.rewardsTotalAmount = event.params.totalAmount;
     cleanup.rewardsParticipantCount = event.params.participantCount;
     cleanup.rewardsDistributedAt = event.block.timestamp;
+    cleanup.status = 4; // REWARDED
+    cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
   }
 }
