@@ -58,22 +58,7 @@
   },
   {
     "inputs": [],
-    "name": "InvalidKYCStatus",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "InvalidReferralCode",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotOrganizer",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotPerson",
     "type": "error"
   },
   {
@@ -130,131 +115,12 @@
       },
       {
         "indexed": false,
-        "internalType": "enum IUserRegistry.KYCStatus",
-        "name": "oldStatus",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "enum IUserRegistry.KYCStatus",
-        "name": "newStatus",
-        "type": "uint8"
-      }
-    ],
-    "name": "KYCStatusUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isOrganizer",
-        "type": "bool"
-      }
-    ],
-    "name": "OrganizerStatusUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "referralCode",
         "type": "string"
       }
     ],
     "name": "ReferralCodeSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "previousAdminRole",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "newAdminRole",
-        "type": "bytes32"
-      }
-    ],
-    "name": "RoleAdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleGranted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleRevoked",
     "type": "event"
   },
   {
@@ -526,13 +392,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "completeKYCWithPassport",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "string",
@@ -610,11 +469,6 @@
             "internalType": "bool",
             "name": "isEmailVerified",
             "type": "bool"
-          },
-          {
-            "internalType": "enum IUserRegistry.KYCStatus",
-            "name": "kycStatus",
-            "type": "uint8"
           },
           {
             "internalType": "string",
@@ -703,32 +557,6 @@
       }
     ],
     "name": "hasRole",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "markKYCPending",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "organizers",
     "outputs": [
       {
         "internalType": "bool",
@@ -891,31 +719,6 @@
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isOrganizer",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct Params.SetOrganizerStatusParams",
-        "name": "params",
-        "type": "tuple"
-      }
-    ],
-    "name": "setOrganizerStatus",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "referralCode",
         "type": "string"
@@ -1012,31 +815,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "internalType": "enum IUserRegistry.KYCStatus",
-            "name": "status",
-            "type": "uint8"
-          }
-        ],
-        "internalType": "struct Params.UpdateKYCStatusParams",
-        "name": "params",
-        "type": "tuple"
-      }
-    ],
-    "name": "updateKYCStatus",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1146,11 +924,6 @@
             "internalType": "bool",
             "name": "isEmailVerified",
             "type": "bool"
-          },
-          {
-            "internalType": "enum IUserRegistry.KYCStatus",
-            "name": "kycStatus",
-            "type": "uint8"
           },
           {
             "internalType": "string",

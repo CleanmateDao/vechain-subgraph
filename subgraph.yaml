@@ -7,8 +7,8 @@ dataSources:
     network: test
     source:
       abi: Cleanup
-      address: "0x90c63911ab2bca0a686d732f0be7fb0fbe25971b"
-      startBlock: 23742600
+      address: "0x5efe0b1ba4bde6f2db1cd4dbc400a049a70187a8"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -51,8 +51,8 @@ dataSources:
     network: test
     source:
       abi: UserRegistry
-      address: "0xcf07d7c4ab78d0d450e1792a1a5efa157e1832fb"
-      startBlock: 23742600
+      address: "0xa0c7791c304c8c2815edc35cc09eec9bbeb8e26f"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -92,8 +92,8 @@ dataSources:
     network: test
     source:
       abi: RewardsManager
-      address: "0x05a7fb49fa286fb0927436a8dcbc09b13a459cd1"
-      startBlock: 23742600
+      address: "0x553a4fe79040d24c984f5db12989b735af14669c"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -121,8 +121,8 @@ dataSources:
     network: test
     source:
       abi: AddressesProvider
-      address: "0xeb832ec71c6bd22e5b6ca9f83dab3133c1c0c7e6"
-      startBlock: 23742600
+      address: "0x8484d9e7ae74f9225ebec174f23910313fd155e8"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -141,14 +141,13 @@ dataSources:
     network: test
     source:
       abi: Streak
-      address: "0xcee1f35891400a29c84800426c9df75f399baaf3"
-      startBlock: 23742600
+      address: "0xb3dddd1e38d2c59111d2353db69e8c3bd8a656e4"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - StreakerJoined
         - StreakSubmitted
         - StreakApproved
         - StreakRejected
@@ -156,8 +155,6 @@ dataSources:
         - name: Streak
           file: ./abis/Streak.json
       eventHandlers:
-        - event: StreakerJoined(indexed address,string)
-          handler: handleStreakerJoined
         - event: StreakSubmitted(indexed address,indexed uint256,string,string[],string[])
           handler: handleStreakSubmitted
         - event: StreakApproved(indexed address,indexed uint256,uint256)
@@ -170,8 +167,8 @@ dataSources:
     network: test
     source:
       abi: NativePassport
-      address: "0x5251a9b1de7bedf7d75adebfa4145dc6162a8600"
-      startBlock: 23742600
+      address: "0xe81abf39fb7a8d226e1ccaec2973ba12eed7535f"
+      startBlock: 23821200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

@@ -75,16 +75,6 @@
   },
   {
     "inputs": [],
-    "name": "StreakerAlreadyJoined",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "StreakerNotJoined",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "SubmissionDoesNotExist",
     "type": "error"
   },
@@ -118,81 +108,6 @@
     "inputs": [],
     "name": "ZeroAddress",
     "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "previousAdminRole",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "newAdminRole",
-        "type": "bytes32"
-      }
-    ],
-    "name": "RoleAdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleGranted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleRevoked",
-    "type": "event"
   },
   {
     "anonymous": false,
@@ -282,25 +197,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "streakerCode",
-        "type": "string"
-      }
-    ],
-    "name": "StreakerJoined",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "ADMIN_ROLE",
     "outputs": [
@@ -334,19 +230,6 @@
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "STREAKER_CODE_PREFIX",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -579,13 +462,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "joinStreak",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -838,6 +714,11 @@
       {
         "internalType": "address",
         "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "embeddedAddress",
         "type": "address"
       },
       {

@@ -163,25 +163,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "oldProvider",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newProvider",
-        "type": "address"
-      }
-    ],
-    "name": "AddressesProviderUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "bytes32",
         "name": "oldAppId",
@@ -195,44 +176,6 @@
       }
     ],
     "name": "AppIdUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "oldToken",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newToken",
-        "type": "address"
-      }
-    ],
-    "name": "OffRampTokenUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "oldTreasury",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newTreasury",
-        "type": "address"
-      }
-    ],
-    "name": "OffRampTreasuryUpdated",
     "type": "event"
   },
   {
@@ -320,131 +263,6 @@
       }
     ],
     "name": "RewardsPoolUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "previousAdminRole",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "newAdminRole",
-        "type": "bytes32"
-      }
-    ],
-    "name": "RoleAdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleGranted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleRevoked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "distributor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "totalAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "submissionCount",
-        "type": "uint256"
-      }
-    ],
-    "name": "StreaksRewardDistributed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "TokenTransferred",
     "type": "event"
   },
   {
@@ -748,7 +566,7 @@
   },
   {
     "inputs": [],
-    "name": "offRampToken",
+    "name": "b3trToken",
     "outputs": [
       {
         "internalType": "address",
@@ -761,7 +579,7 @@
   },
   {
     "inputs": [],
-    "name": "offRampTreasury",
+    "name": "b3trTreasury",
     "outputs": [
       {
         "internalType": "address",

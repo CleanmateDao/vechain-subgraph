@@ -62,25 +62,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "CLEANUP_KEY",
     "outputs": [
@@ -96,6 +77,19 @@
   {
     "inputs": [],
     "name": "GAS_METER_KEY",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "NATIVE_PASSPORT_KEY",
     "outputs": [
       {
         "internalType": "string",
@@ -250,6 +244,19 @@
   },
   {
     "inputs": [],
+    "name": "getNativePassport",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "passport",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getRewardsManager",
     "outputs": [
       {
@@ -373,6 +380,19 @@
       }
     ],
     "name": "setGasMeter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setNativePassport",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
