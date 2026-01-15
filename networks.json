@@ -23,32 +23,40 @@
     "NativePassport": {
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 0
+    },
+    "GasMeter": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
     }
   },
   "testnet": {
     "Cleanup": {
-      "address": "0x5efe0b1ba4bde6f2db1cd4dbc400a049a70187a8",
-      "startBlock": 23821200
+      "address": "0x69559dba3ee4b9657f8fce772ac7a7b3e4c51bda",
+      "startBlock": 23844900
     },
     "UserRegistry": {
-      "address": "0xa0c7791c304c8c2815edc35cc09eec9bbeb8e26f",
-      "startBlock": 23821200
+      "address": "0xc888b825016bc3dff57b76f3c047f5056ec364e3",
+      "startBlock": 23844900
     },
     "RewardsManager": {
-      "address": "0x553a4fe79040d24c984f5db12989b735af14669c",
-      "startBlock": 23821200
+      "address": "0xe865d8f6330aa09ba4cb2607e630e9e978889c2d",
+      "startBlock": 23844900
     },
     "AddressesProvider": {
-      "address": "0x8484d9e7ae74f9225ebec174f23910313fd155e8",
-      "startBlock": 23821200
+      "address": "0x6200597a79256b89d464f593e62c7eb84369fab4",
+      "startBlock": 23844900
     },
     "Streak": {
-      "address": "0xb3dddd1e38d2c59111d2353db69e8c3bd8a656e4",
-      "startBlock": 23821200
+      "address": "0xe94d352ef9e037ca8b7f7447f1e3f77e4b59aed4",
+      "startBlock": 23844900
     },
     "NativePassport": {
-      "address": "0xe81abf39fb7a8d226e1ccaec2973ba12eed7535f",
-      "startBlock": 23821200
+      "address": "0x6c4ffbc63ee0e21ac462ac7b41b9b3ce23973b80",
+      "startBlock": 23844900
+    },
+    "GasMeter": {
+      "address": "0x8d79c30d7c3ec179de921db05bc95f7cd86cfbcd",
+      "startBlock": 23844900
     }
   }
 }

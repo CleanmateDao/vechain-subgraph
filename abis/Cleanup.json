@@ -234,9 +234,34 @@
         "internalType": "uint256",
         "name": "maxParticipants",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isPrivate",
+        "type": "bool"
       }
     ],
     "name": "CleanupCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "cleanupId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "CleanupMadePublic",
     "type": "event"
   },
   {
@@ -443,6 +468,81 @@
       }
     ],
     "name": "ProofOfWorkSubmitted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RoleAdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleGranted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleRevoked",
     "type": "event"
   },
   {
@@ -753,6 +853,11 @@
             "internalType": "uint256",
             "name": "proofSubmittedAt",
             "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPrivate",
+            "type": "bool"
           }
         ],
         "internalType": "struct ICleanup.CleanupData",
@@ -847,6 +952,11 @@
             "internalType": "uint256",
             "name": "maxParticipants",
             "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPrivate",
+            "type": "bool"
           }
         ],
         "internalType": "struct Params.CreateCleanupParams",
@@ -930,6 +1040,11 @@
             "internalType": "uint256",
             "name": "maxParticipants",
             "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPrivate",
+            "type": "bool"
           }
         ],
         "internalType": "struct Params.CreateCleanupParams",
@@ -1104,6 +1219,11 @@
             "internalType": "uint256",
             "name": "proofSubmittedAt",
             "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPrivate",
+            "type": "bool"
           }
         ],
         "internalType": "struct ICleanup.CleanupData",
@@ -1269,6 +1389,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "cleanupId",
+        "type": "uint256"
+      }
+    ],
+    "name": "makeCleanupPublic",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

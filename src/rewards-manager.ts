@@ -3,6 +3,7 @@ import {
   RewardsDistributed as RewardsDistributedEvent,
   AppIdUpdated as AppIdUpdatedEvent,
   RewardsPoolUpdated as RewardsPoolUpdatedEvent,
+  TokenTransferred as TokenTransferredEvent,
 } from "../generated/RewardsManager/RewardsManager";
 import {
   Transaction,
@@ -155,4 +156,22 @@ export function handleRewardsPoolUpdated(event: RewardsPoolUpdatedEvent): void {
   rewardsPoolUpdated.blockTimestamp = event.block.timestamp;
   rewardsPoolUpdated.transactionHash = event.transaction.hash;
   rewardsPoolUpdated.save();
+}
+
+export function handleTokenTransferred(event: TokenTransferredEvent): void {
+  // Create Transaction entity for CLAIM transaction
+  let transactionId = event.transaction.hash
+    .concatI32(event.logIndex.toI32())
+    .concat(Bytes.fromUTF8("token_transferred"));
+  let transaction = new Transaction(transactionId.toHex());
+  transaction.user = event.params.user;
+  transaction.cleanupId = null;
+  transaction.streakSubmissionId = null;
+  transaction.amount = event.params.amount;
+  transaction.transactionType = "CLAIM";
+  // rewardType is not set for CLAIM transactions (will be null in GraphQL)
+  transaction.timestamp = event.block.timestamp;
+  transaction.blockNumber = event.block.number;
+  transaction.transactionHash = event.transaction.hash;
+  transaction.save();
 }

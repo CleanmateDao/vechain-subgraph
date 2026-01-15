@@ -52,6 +52,7 @@ type Cleanup @entity(immutable: false) {
   unpublishedAt: BigInt
   createdAt: BigInt!
   updatedAt: BigInt
+  isPrivate: Boolean! # whether the cleanup is private (no schedule needed, no public view)
   # Participants
   participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
   # Proof of work

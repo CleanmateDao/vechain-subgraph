@@ -3,6 +3,7 @@ import {
   CleanupPublished as CleanupPublishedEvent,
   CleanupStatusUpdated as CleanupStatusUpdatedEvent,
   CleanupUnpublished as CleanupUnpublishedEvent,
+  CleanupMadePublic as CleanupMadePublicEvent,
   CleanupUpdatesAdded as CleanupUpdatesAddedEvent,
   ParticipantAccepted as ParticipantAcceptedEvent,
   ParticipantApplied as ParticipantAppliedEvent,
@@ -25,8 +26,9 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
   let cleanup = Cleanup.load(cleanupId);
   if (cleanup == null) {
     cleanup = new Cleanup(cleanupId);
-    cleanup.status = 0; // UNPUBLISHED
-    cleanup.published = false;
+    // Private cleanups start as OPEN (published), public cleanups start as UNPUBLISHED
+    cleanup.status = event.params.isPrivate ? 1 : 0; // OPEN for private, UNPUBLISHED for public
+    cleanup.published = event.params.isPrivate; // Private cleanups are published immediately
     cleanup.proofOfWorkSubmitted = false;
     cleanup.rewardsDistributed = false;
     cleanup.updatesCount = BigInt.fromI32(0);
@@ -44,9 +46,16 @@ export function handleCleanupCreated(event: CleanupCreatedEvent): void {
   cleanup.startTime = event.params.startTime;
   cleanup.endTime = event.params.endTime;
   cleanup.maxParticipants = event.params.maxParticipants;
+  cleanup.isPrivate = event.params.isPrivate;
   cleanup.rewardAmount = BigInt.fromI32(0);
   cleanup.createdAt = event.block.timestamp;
   cleanup.updatedAt = event.block.timestamp;
+
+  // Set publishedAt for private cleanups (they're published immediately)
+  if (event.params.isPrivate) {
+    cleanup.publishedAt = event.block.timestamp;
+  }
+
   cleanup.save();
 }
 
@@ -82,6 +91,17 @@ export function handleCleanupUnpublished(event: CleanupUnpublishedEvent): void {
   if (cleanup != null) {
     cleanup.published = false;
     cleanup.unpublishedAt = event.block.timestamp;
+    cleanup.updatedAt = event.block.timestamp;
+    cleanup.save();
+  }
+}
+
+export function handleCleanupMadePublic(event: CleanupMadePublicEvent): void {
+  // Update Cleanup state - make private cleanup public
+  let cleanupId = event.params.cleanupId.toString();
+  let cleanup = Cleanup.load(cleanupId);
+  if (cleanup != null) {
+    cleanup.isPrivate = false;
     cleanup.updatedAt = event.block.timestamp;
     cleanup.save();
   }

@@ -61,7 +61,7 @@ export function handleUserRegistered(event: UserRegisteredEvent): void {
   );
   notification.user = event.params.user;
   notification.type = "user_registered";
-  notification.title = "Welcome to CleanMate!";
+  notification.title = "Welcome to Cleanmate!";
   notification.message = "Your account has been successfully registered.";
   notification.relatedEntity = event.params.user.toHexString();
   notification.relatedEntityType = "user";
