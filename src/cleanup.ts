@@ -78,8 +78,32 @@ export function handleCleanupStatusUpdated(
   let cleanupId = event.params.cleanupId.toString();
   let cleanup = Cleanup.load(cleanupId);
   if (cleanup != null) {
-    cleanup.status = event.params.newStatus;
+    let newStatus = event.params.newStatus;
+
+    cleanup.status = newStatus;
     cleanup.updatedAt = event.block.timestamp;
+
+    let oldStartTime = cleanup.startTime || BigInt.fromI32(0);
+    let oldEndTime = cleanup.endTime || BigInt.fromI32(0);
+
+    // Update startTime when transitioning to IN_PROGRESS (status = 2)
+    if (newStatus == 2) {
+      // IN_PROGRESS - set startTime to block timestamp
+      cleanup.startTime = event.block.timestamp;
+
+      if (oldEndTime && oldStartTime) {
+        cleanup.endTime = event.block.timestamp.plus(
+          oldEndTime.minus(oldStartTime)
+        );
+      }
+    }
+
+    // Update endTime when transitioning to COMPLETED (status = 3)
+    if (newStatus == 3) {
+      // COMPLETED - set endTime to block timestamp
+      cleanup.endTime = event.block.timestamp;
+    }
+
     cleanup.save();
   }
 }
