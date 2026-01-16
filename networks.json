@@ -31,7 +31,7 @@
   },
   "testnet": {
     "Cleanup": {
-      "address": "0x69559dba3ee4b9657f8fce772ac7a7b3e4c51bda",
+      "address": "0x90da4a5e6120d5eec4d23d0796c7fb8f61c67d03",
       "startBlock": 23844900
     },
     "UserRegistry": {
