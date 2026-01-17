@@ -1,0 +1,1717 @@
+[
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addressesProviderAddr",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "chainIdValue",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AccessControlBadConfirmation",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "neededRole",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AccessControlUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyApplied",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ECDSAInvalidSignature",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "name": "ECDSAInvalidSignatureLength",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ECDSAInvalidSignatureS",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "EmailNotVerified",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "EmptyString",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ImpactDoesNotExist",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ImpactFull",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ImpactNotOpen",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientProofMedia",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidInput",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidStatusTransition",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "LengthMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotOrganizer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotVerifiedOrganizer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ParticipantNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ParticipantNotPending",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "expectedSigner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "actualSigner",
+          "type": "address"
+        }
+      ],
+      "name": "UnauthorizedSigner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroAddress",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "locationAddress",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "city",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "int256",
+          "name": "latitude",
+          "type": "int256"
+        },
+        {
+          "indexed": false,
+          "internalType": "int256",
+          "name": "longitude",
+          "type": "int256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "date",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxParticipants",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isPrivate",
+          "type": "bool"
+        }
+      ],
+      "name": "ImpactCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "admin",
+          "type": "address"
+        }
+      ],
+      "name": "ImpactMadePublic",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum IImpact.ImpactStatus",
+          "name": "oldStatus",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum IImpact.ImpactStatus",
+          "name": "newStatus",
+          "type": "uint8"
+        }
+      ],
+      "name": "ImpactStatusUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "addedAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "ImpactUpdatesAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        }
+      ],
+      "name": "ParticipantAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "appliedAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "ParticipantApplied",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        }
+      ],
+      "name": "ParticipantRejected",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string[]",
+          "name": "ipfsHashes",
+          "type": "string[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "string[]",
+          "name": "mimetypes",
+          "type": "string[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "submittedAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "ProofOfWorkSubmitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "previousAdminRole",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "newAdminRole",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "ADMIN_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DOMAIN_SEPARATOR",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        }
+      ],
+      "name": "acceptParticipant",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "acceptedParticipantsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "impactId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Params.AddImpactUpdatesParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "addImpactUpdates",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "impactId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Params.AddImpactUpdatesParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "editor",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "embeddedAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "addImpactUpdatesWithPermit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "addressesProvider",
+      "outputs": [
+        {
+          "internalType": "contract IAddressesProvider",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "applyToImpact",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "chainId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "category",
+              "type": "string"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "address_",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "city",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "country",
+                  "type": "string"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "latitude",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "longitude",
+                  "type": "int256"
+                }
+              ],
+              "internalType": "struct IImpact.Location",
+              "name": "location",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "date",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "endTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxParticipants",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isPrivate",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Params.CreateImpactParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "createImpact",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "category",
+              "type": "string"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "address_",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "city",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "country",
+                  "type": "string"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "latitude",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "longitude",
+                  "type": "int256"
+                }
+              ],
+              "internalType": "struct IImpact.Location",
+              "name": "location",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "date",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "endTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxParticipants",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isPrivate",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Params.CreateImpactParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "organizer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "embeddedAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "createImpactWithPermit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getChainId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getImpact",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "category",
+              "type": "string"
+            },
+            {
+              "internalType": "enum IImpact.ImpactStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "address_",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "city",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "country",
+                  "type": "string"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "latitude",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "longitude",
+                  "type": "int256"
+                }
+              ],
+              "internalType": "struct IImpact.Location",
+              "name": "location",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "date",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "endTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxParticipants",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "organizer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "updatedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "rewardAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "proofSubmitted",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "proofSubmittedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isPrivate",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IImpact.ImpactData",
+          "name": "data",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getParticipants",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "participantAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IImpact.ParticipantStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "appliedAt",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IImpact.Participant[]",
+          "name": "participantList",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getProofMedia",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "ipfsHash",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "mimetype",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "uploadedAt",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IImpact.ProofMedia[]",
+          "name": "media",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getRoleAdmin",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "hasApplied",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "hasRole",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "impactData",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "category",
+              "type": "string"
+            },
+            {
+              "internalType": "enum IImpact.ImpactStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "address_",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "city",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "country",
+                  "type": "string"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "latitude",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "longitude",
+                  "type": "int256"
+                }
+              ],
+              "internalType": "struct IImpact.Location",
+              "name": "location",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "date",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "endTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxParticipants",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "organizer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "updatedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "rewardAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "proofSubmitted",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "proofSubmittedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isPrivate",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IImpact.ImpactData",
+          "name": "data",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "impactExists",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        }
+      ],
+      "name": "makeImpactPublic",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "minIpfsHashes",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nextImpactId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "nonces",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "participantIndex",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "participants",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "participantAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IImpact.ParticipantStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "appliedAt",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IImpact.Participant",
+          "name": "participant",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        }
+      ],
+      "name": "rejectParticipant",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "callerConfirmation",
+          "type": "address"
+        }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAddressesProvider",
+          "type": "address"
+        }
+      ],
+      "name": "setAddressesProvider",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum IImpact.ImpactStatus",
+          "name": "newStatus",
+          "type": "uint8"
+        }
+      ],
+      "name": "setImpactStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newMinIpfsHashes",
+          "type": "uint256"
+        }
+      ],
+      "name": "setMinIpfsHashes",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string[]",
+              "name": "ipfsHashes",
+              "type": "string[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "mimetypes",
+              "type": "string[]"
+            }
+          ],
+          "internalType": "struct Params.SubmitProofOfWorkParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "submitProofOfWork",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string[]",
+              "name": "ipfsHashes",
+              "type": "string[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "mimetypes",
+              "type": "string[]"
+            }
+          ],
+          "internalType": "struct Params.SubmitProofOfWorkParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "embeddedAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "submitProofOfWorkWithPermit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "interfaceId",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "impactId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum IImpact.ImpactStatus",
+          "name": "newStatus",
+          "type": "uint8"
+        }
+      ],
+      "name": "updateImpactStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "userRegistry",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "registry",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]

@@ -8,8 +8,8 @@ import {
 import {
   Transaction,
   User,
-  Cleanup,
-  CleanupParticipant,
+  Impact,
+  ImpactParticipant,
   Notification,
   AppIdUpdated,
   RewardsPoolUpdated,
@@ -24,9 +24,9 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
     .concat(Bytes.fromUTF8("reward_earned"));
   let transaction = new Transaction(transactionId.toHex());
   transaction.user = event.params.participant;
-  transaction.cleanupId = event.params.cleanupId.isZero()
+  transaction.impactId = event.params.impactId.isZero()
     ? null
-    : event.params.cleanupId;
+    : event.params.impactId;
   transaction.streakSubmissionId = event.params.streakSubmissionId;
   transaction.amount = event.params.amount;
   transaction.transactionType = "RECEIVE";
@@ -64,12 +64,12 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   }
   user.save();
 
-  // Update CleanupParticipant (only if cleanupId is not zero)
-  if (!event.params.cleanupId.isZero()) {
-    let cleanupId = event.params.cleanupId.toString();
+  // Update ImpactParticipant (only if impactId is not zero)
+  if (!event.params.impactId.isZero()) {
+    let impactId = event.params.impactId.toString();
     let participantId =
-      cleanupId + "-" + event.params.participant.toHexString();
-    let participant = CleanupParticipant.load(participantId);
+      impactId + "-" + event.params.participant.toHexString();
+    let participant = ImpactParticipant.load(participantId);
     if (participant != null) {
       // Ensure user field is set (for backward compatibility with existing data)
       participant.user = event.params.participant;
@@ -103,11 +103,11 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
   notification.type = "reward_earned";
   notification.title = "Reward Earned";
   notification.message =
-    "You have earned a reward for participating in a cleanup event.";
-  notification.relatedEntity = event.params.cleanupId.isZero()
+    "You have earned a reward for participating in a impact event.";
+  notification.relatedEntity = event.params.impactId.isZero()
     ? null
-    : event.params.cleanupId.toString();
-  notification.relatedEntityType = "cleanup";
+    : event.params.impactId.toString();
+  notification.relatedEntityType = "impact";
 
   notification.createdAt = event.block.timestamp;
   notification.blockNumber = event.block.number;
@@ -116,17 +116,17 @@ export function handleRewardEarned(event: RewardEarnedEvent): void {
 }
 
 export function handleRewardsDistributed(event: RewardsDistributedEvent): void {
-  // Update Cleanup state
-  let cleanupId = event.params.cleanupId.toString();
-  let cleanup = Cleanup.load(cleanupId);
-  if (cleanup != null) {
-    cleanup.rewardsDistributed = true;
-    cleanup.rewardsTotalAmount = event.params.totalAmount;
-    cleanup.rewardsParticipantCount = event.params.participantCount;
-    cleanup.rewardsDistributedAt = event.block.timestamp;
-    cleanup.status = 4; // REWARDED
-    cleanup.updatedAt = event.block.timestamp;
-    cleanup.save();
+  // Update Impact state
+  let impactId = event.params.impactId.toString();
+  let impact = Impact.load(impactId);
+  if (impact != null) {
+    impact.rewardsDistributed = true;
+    impact.rewardsTotalAmount = event.params.totalAmount;
+    impact.rewardsParticipantCount = event.params.participantCount;
+    impact.rewardsDistributedAt = event.block.timestamp;
+    impact.status = 4; // REWARDED
+    impact.updatedAt = event.block.timestamp;
+    impact.save();
   }
 }
 
@@ -165,7 +165,7 @@ export function handleTokenTransferred(event: TokenTransferredEvent): void {
     .concat(Bytes.fromUTF8("token_transferred"));
   let transaction = new Transaction(transactionId.toHex());
   transaction.user = event.params.user;
-  transaction.cleanupId = null;
+  transaction.impactId = null;
   transaction.streakSubmissionId = null;
   transaction.amount = event.params.amount;
   transaction.transactionType = "CLAIM";

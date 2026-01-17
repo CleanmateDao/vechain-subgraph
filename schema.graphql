@@ -27,7 +27,7 @@ type TeamMembership @entity(immutable: false) {
   organizer: Bytes! # address
   member: Bytes! # address
   memberUser: User! # reference to User entity
-  canEditCleanups: Boolean!
+  canEditImpacts: Boolean!
   canManageParticipants: Boolean!
   canSubmitProof: Boolean!
   addedAt: BigInt!
@@ -36,9 +36,9 @@ type TeamMembership @entity(immutable: false) {
   deletedAt: BigInt # timestamp when the membership was removed
 }
 
-# Cleanup State Entity - merges all cleanup-related events
-type Cleanup @entity(immutable: false) {
-  id: String! # cleanup ID (uint256 as string)
+# Impact State Entity - merges all impact-related events
+type Impact @entity(immutable: false) {
+  id: String! # impact ID (uint256 as string)
   organizer: Bytes! # address
   metadata: String!
   category: String
@@ -52,15 +52,15 @@ type Cleanup @entity(immutable: false) {
   unpublishedAt: BigInt
   createdAt: BigInt!
   updatedAt: BigInt
-  isPrivate: Boolean! # whether the cleanup is private (no schedule needed, no public view)
+  isPrivate: Boolean! # whether the impact is private (no schedule needed, no public view)
   # Participants
-  participants: [CleanupParticipant!]! @derivedFrom(field: "cleanup")
+  participants: [ImpactParticipant!]! @derivedFrom(field: "impact")
   # Proof of work
   proofOfWorkSubmitted: Boolean!
-  proofOfWork: ProofOfWork @derivedFrom(field: "cleanup")
+  proofOfWork: ProofOfWork @derivedFrom(field: "impact")
   proofOfWorkSubmittedAt: BigInt
   # Updates
-  updates: [CleanupUpdate!]! @derivedFrom(field: "cleanup")
+  updates: [ImpactUpdate!]! @derivedFrom(field: "impact")
   updatesCount: BigInt
   # Location
   location: String # address
@@ -78,18 +78,18 @@ type Cleanup @entity(immutable: false) {
 
 # Proof of Work - stores Proof of Work Medias URLs with MIME types
 type ProofOfWork @entity(immutable: true) {
-  id: ID! # cleanup ID + submission timestamp + media index
-  cleanup: Cleanup!
+  id: ID! # impact ID + submission timestamp + media index
+  impact: Impact!
   # Media/Proof
   ipfsHashes: [String!]!
   mimetypes: [String!]!
   submittedAt: BigInt!
 }
 
-# Cleanup Update - tracks updates/announcements for cleanup events
-type CleanupUpdate @entity(immutable: true) {
+# Impact Update - tracks updates/announcements for impact events
+type ImpactUpdate @entity(immutable: true) {
   id: ID! # transaction hash + log index
-  cleanup: Cleanup!
+  impact: Impact!
   organizer: Bytes! # address of organizer/editor who added the update
   metadata: String! # update content/metadata
   addedAt: BigInt!
@@ -97,17 +97,17 @@ type CleanupUpdate @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-# Cleanup Participant - tracks participant state per cleanup
-type CleanupParticipant @entity(immutable: false) {
-  id: ID! # cleanup ID + participant address
-  cleanup: Cleanup!
+# Impact Participant - tracks participant state per impact
+type ImpactParticipant @entity(immutable: false) {
+  id: ID! # impact ID + participant address
+  impact: Impact!
   participant: Bytes! # address
   user: User! # reference to User entity
   appliedAt: BigInt!
   status: String! # "applied", "accepted", "rejected"
   acceptedAt: BigInt
   rejectedAt: BigInt
-  # Reward earned for this cleanup
+  # Reward earned for this impact
   rewardEarned: BigInt!
   rewardEarnedAt: BigInt
 }
@@ -116,11 +116,11 @@ type CleanupParticipant @entity(immutable: false) {
 type Transaction @entity(immutable: true) {
   id: ID! # transaction hash + log index (unique per event)
   user: Bytes! # address
-  cleanupId: BigInt # cleanup ID (uint256, null for non-cleanup rewards)
+  impactId: BigInt # impact ID (uint256, null for non-impact rewards)
   streakSubmissionId: BigInt # streak submission id (0 for non-streak rewards)
   amount: BigInt! # uint256
   transactionType: String! # "CLAIM" or "RECEIVE"
-  rewardType: Int # rewardType from event (0=REFERRAL, 1=BONUS, 2=CLEANUP, 3=STREAK, 4=OTHERS) (null for CLAIM transactions)
+  rewardType: Int # rewardType from event (0=REFERRAL, 1=BONUS, 2=IMPACT, 3=STREAK, 4=OTHERS) (null for CLAIM transactions)
   timestamp: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!
@@ -130,10 +130,10 @@ type Transaction @entity(immutable: true) {
 type Notification @entity(immutable: true) {
   id: ID!
   user: Bytes! # address
-  type: String! # notification type (e.g., "cleanup_created", "participant_accepted", "reward_earned")
+  type: String! # notification type (e.g., "impact_created", "participant_accepted", "reward_earned")
   title: String!
   message: String!
-  relatedEntity: String # ID of related entity (cleanup ID as string, user address, etc.)
+  relatedEntity: String # ID of related entity (impact ID as string, user address, etc.)
   relatedEntityType: String # type of related entity
   createdAt: BigInt!
   blockNumber: BigInt!

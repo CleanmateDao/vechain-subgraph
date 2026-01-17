@@ -3,43 +3,37 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Cleanup
+    name: Impact
     network: test
     source:
-      abi: Cleanup
-      address: "0x90da4a5e6120d5eec4d23d0796c7fb8f61c67d03"
+      abi: Impact
+      address: "0xca1e2c605bf539bb88d1329db2a9230d7e7a6c33"
       startBlock: 23844900
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - CleanupCreated
-        - CleanupPublished
-        - CleanupStatusUpdated
-        - CleanupUnpublished
-        - CleanupMadePublic
-        - CleanupUpdatesAdded
+        - ImpactCreated
+        - ImpactStatusUpdated
+        - ImpactMadePublic
+        - ImpactUpdatesAdded
         - ParticipantAccepted
         - ParticipantApplied
         - ParticipantRejected
         - ProofOfWorkSubmitted
       abis:
-        - name: Cleanup
-          file: ./abis/Cleanup.json
+        - name: Impact
+          file: ./abis/Impact.json
       eventHandlers:
-        - event: CleanupCreated(indexed uint256,indexed address,string,string,string,string,string,int256,int256,uint256,uint256,uint256,uint256,bool)
-          handler: handleCleanupCreated
-        - event: CleanupPublished(indexed uint256,indexed address)
-          handler: handleCleanupPublished
-        - event: CleanupStatusUpdated(indexed uint256,uint8,uint8)
-          handler: handleCleanupStatusUpdated
-        - event: CleanupUnpublished(indexed uint256,indexed address)
-          handler: handleCleanupUnpublished
-        - event: CleanupMadePublic(indexed uint256,indexed address)
-          handler: handleCleanupMadePublic
-        - event: CleanupUpdatesAdded(indexed uint256,indexed address,string,uint256)
-          handler: handleCleanupUpdatesAdded
+        - event: ImpactCreated(indexed uint256,indexed address,string,string,string,string,string,int256,int256,uint256,uint256,uint256,uint256,bool)
+          handler: handleImpactCreated
+        - event: ImpactStatusUpdated(indexed uint256,uint8,uint8)
+          handler: handleImpactStatusUpdated
+        - event: ImpactMadePublic(indexed uint256,indexed address)
+          handler: handleImpactMadePublic
+        - event: ImpactUpdatesAdded(indexed uint256,indexed address,string,uint256)
+          handler: handleImpactUpdatesAdded
         - event: ParticipantAccepted(indexed uint256,indexed address,indexed address)
           handler: handleParticipantAccepted
         - event: ParticipantApplied(indexed uint256,indexed address,uint256)
@@ -48,13 +42,13 @@ dataSources:
           handler: handleParticipantRejected
         - event: ProofOfWorkSubmitted(indexed uint256,indexed address,string[],string[],uint256)
           handler: handleProofOfWorkSubmitted
-      file: ./src/cleanup.ts
+      file: ./src/impact.ts
   - kind: ethereum
     name: UserRegistry
     network: test
     source:
       abi: UserRegistry
-      address: "0xc888b825016bc3dff57b76f3c047f5056ec364e3"
+      address: "0xdb4ae95203ee72b34f8544d74f464a510d4fb077"
       startBlock: 23844900
     mapping:
       kind: ethereum/events
@@ -95,7 +89,7 @@ dataSources:
     network: test
     source:
       abi: RewardsManager
-      address: "0xe865d8f6330aa09ba4cb2607e630e9e978889c2d"
+      address: "0x2392e592634f2f8a7de714ce8da95409cd999142"
       startBlock: 23844900
     mapping:
       kind: ethereum/events
@@ -127,7 +121,7 @@ dataSources:
     network: test
     source:
       abi: AddressesProvider
-      address: "0x6200597a79256b89d464f593e62c7eb84369fab4"
+      address: "0x1e768e731692e02f004f0b5af6399c5429c71c1e"
       startBlock: 23844900
     mapping:
       kind: ethereum/events
@@ -147,7 +141,7 @@ dataSources:
     network: test
     source:
       abi: Streak
-      address: "0xe94d352ef9e037ca8b7f7447f1e3f77e4b59aed4"
+      address: "0x0fd228ae9315a08ba08355bc12e04bce448187bc"
       startBlock: 23844900
     mapping:
       kind: ethereum/events
@@ -173,7 +167,7 @@ dataSources:
     network: test
     source:
       abi: NativePassport
-      address: "0x6c4ffbc63ee0e21ac462ac7b41b9b3ce23973b80"
+      address: "0x6af09e61f62d3b6d5a24be78ced11beb735faa77"
       startBlock: 23844900
     mapping:
       kind: ethereum/events

@@ -43,12 +43,12 @@
   },
   {
     "inputs": [],
-    "name": "CleanupDoesNotExist",
+    "name": "ImpactDoesNotExist",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "CleanupNotCompleted",
+    "name": "ImpactNotCompleted",
     "type": "error"
   },
   {
@@ -90,7 +90,7 @@
   },
   {
     "inputs": [],
-    "name": "InvalidCleanupAddress",
+    "name": "InvalidImpactAddress",
     "type": "error"
   },
   {
@@ -115,7 +115,7 @@
   },
   {
     "inputs": [],
-    "name": "ParticipantNotAcceptedInCleanup",
+    "name": "ParticipantNotAcceptedInImpact",
     "type": "error"
   },
   {
@@ -184,7 +184,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "cleanupId",
+        "name": "impactId",
         "type": "uint256"
       },
       {
@@ -221,7 +221,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "cleanupId",
+        "name": "impactId",
         "type": "uint256"
       },
       {
@@ -374,7 +374,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "cleanupId",
+            "name": "impactId",
             "type": "uint256"
           },
           {

@@ -141,7 +141,7 @@
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "canEditCleanups",
+        "name": "canEditImpacts",
         "type": "bool"
       },
       {
@@ -178,7 +178,7 @@
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "canEditCleanups",
+        "name": "canEditImpacts",
         "type": "bool"
       },
       {
@@ -322,7 +322,7 @@
           },
           {
             "internalType": "bool",
-            "name": "canEditCleanups",
+            "name": "canEditImpacts",
             "type": "bool"
           },
           {
@@ -380,11 +380,11 @@
   },
   {
     "inputs": [],
-    "name": "cleanup",
+    "name": "impact",
     "outputs": [
       {
         "internalType": "address",
-        "name": "cleanupContract",
+        "name": "impactContract",
         "type": "address"
       }
     ],
@@ -790,7 +790,7 @@
           },
           {
             "internalType": "bool",
-            "name": "canEditCleanups",
+            "name": "canEditImpacts",
             "type": "bool"
           },
           {
@@ -841,7 +841,7 @@
           },
           {
             "internalType": "bool",
-            "name": "canEditCleanups",
+            "name": "canEditImpacts",
             "type": "bool"
           },
           {

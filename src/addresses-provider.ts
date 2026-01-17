@@ -6,7 +6,7 @@ import { AddressUpdated } from "../generated/schema";
  * 
  * This handler tracks all address updates including:
  * - USER_REGISTRY
- * - CLEANUP_FACTORY
+ * - IMPACT
  * - REWARDS_MANAGER
  * - REWARDS_POOL
  * - STREAK

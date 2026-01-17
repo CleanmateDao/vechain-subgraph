@@ -63,7 +63,7 @@
   },
   {
     "inputs": [],
-    "name": "CLEANUP_KEY",
+    "name": "IMPACT_KEY",
     "outputs": [
       {
         "internalType": "string",
@@ -218,11 +218,11 @@
   },
   {
     "inputs": [],
-    "name": "getCleanup",
+    "name": "getImpact",
     "outputs": [
       {
         "internalType": "address",
-        "name": "cleanup",
+        "name": "impact",
         "type": "address"
       }
     ],
@@ -366,7 +366,7 @@
         "type": "address"
       }
     ],
-    "name": "setCleanup",
+    "name": "setImpact",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

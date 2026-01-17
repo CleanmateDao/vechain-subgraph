@@ -217,7 +217,7 @@ export function handleTeamMemberAdded(event: TeamMemberAddedEvent): void {
     membership.deletedAt = null;
   }
 
-  membership.canEditCleanups = event.params.canEditCleanups;
+  membership.canEditImpacts = event.params.canEditImpacts;
   membership.canManageParticipants = event.params.canManageParticipants;
   membership.canSubmitProof = event.params.canSubmitProof;
   membership.lastUpdatedAt = event.block.timestamp;
@@ -286,7 +286,7 @@ export function handleTeamMemberPermissionsUpdated(
       membership.memberUser = member.id;
     }
 
-    membership.canEditCleanups = event.params.canEditCleanups;
+    membership.canEditImpacts = event.params.canEditImpacts;
     membership.canManageParticipants = event.params.canManageParticipants;
     membership.canSubmitProof = event.params.canSubmitProof;
     membership.lastUpdatedAt = event.block.timestamp;

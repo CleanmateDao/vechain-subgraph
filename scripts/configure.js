@@ -48,7 +48,7 @@ function main() {
     fail(`Unknown network '${network}'. Expected one of: ${Object.keys(networks).join(", ")}`);
   }
 
-  const required = ["CleanupFactory", "UserRegistry", "RewardsManager", "AddressesProvider", "Streak"];
+  const required = ["ImpactFactory", "UserRegistry", "RewardsManager", "AddressesProvider", "Streak"];
   for (const name of required) {
     if (!cfg[name]) fail(`networks.json missing '${network}.${name}'`);
     assertAddress(cfg[name].address, `${network}.${name}`);
